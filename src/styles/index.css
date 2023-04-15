@@ -1,2 +1,4 @@
 @import "./settings.css";
 @import "./components/navbar";
+@import "./components/sidebar.css";
+@import "./page/accueil.css";

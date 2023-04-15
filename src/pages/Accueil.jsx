@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
+import Sidebar from '../components/Sidebar';
 
 const Accueil = () => {
+    const [showSidebar, setShowSidebar] = useState(false);
+
+  const handleSidebarToggle = () => {
+    setShowSidebar(!showSidebar);
+  };
     return (
-        <div className='accueil'>
-            <NavBar />
-            <div className="lorem">
+        <div className={`accueil${showSidebar ? ' show-sidebar' : ''}`}>
+      <NavBar />
+      <Sidebar onToggle={handleSidebarToggle} />
+      <div className="lorem">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est soluta a accusamus fugit. Earum tempora nisi vel voluptas alias, quasi architecto laborum facilis, explicabo, qui quia ipsa a cumque laboriosam?
                 Nobis sapiente quisquam dolore, facilis amet atque autem earum temporibus voluptatum, exercitationem itaque corporis repellendus reprehenderit praesentium incidunt repellat! Doloremque recusandae quas vero magni similique? Quibusdam sed molestiae adipisci temporibus?
                 Ducimus quisquam dicta error laborum minus debitis quis odio, aliquam nisi nulla vel, itaque aperiam consequuntur deleniti assumenda molestias iste. Temporibus vitae quaerat quas maiores velit, tempore facere nisi molestias.

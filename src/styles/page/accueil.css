@@ -1,0 +1,5 @@
+.accueil {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* colonne 1 pour la sidebar, colonne 2 pour le contenu */
+  }
+  
