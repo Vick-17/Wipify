@@ -1,0 +1,28 @@
+.twitch-conatainer{
+display: flex;
+padding: 5%;
+text-align: center;
+flex-wrap: wrap;
+justify-content:space-between;
+}
+.live-title{
+    color: #fff;
+    font-size: 50px;
+}
+.live-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+}
+.day-list{
+    font-size: 25px;
+    color: white;
+
+}
+.live-calendar{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50%;
+}

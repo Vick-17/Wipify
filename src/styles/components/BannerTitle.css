@@ -1,0 +1,7 @@
+.banniere-accueil{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding: 3%;
+    justify-content: space-between;
+}
