@@ -3,6 +3,14 @@ import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 
 const NavBar = () => {
+    //annimation navbar chargement
+    const [showElement, setShowElement] = useState(false);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setShowElement(true);
+      }, 500);
+    }, []);
 
   //annimation navbar scroll
   var prevScrollpos = window.pageYOffset;
@@ -15,15 +23,6 @@ const NavBar = () => {
     }
     prevScrollpos = currentScrollPos;
   };
-
-  //annimation navbar chargement
-  const [showElement, setShowElement] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowElement(true);
-    }, 500);
-  }, []);
 
   return (
     <>
@@ -59,6 +58,12 @@ const NavBar = () => {
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">a propos</li>
+          </NavLink>
+          <NavLink
+            to="login"
+            className={(nav) => (nav.isActive ? "nav-active" : "")}
+          >
+            <li className="nav-list">Login</li>
           </NavLink>
         </ul>
       </div>

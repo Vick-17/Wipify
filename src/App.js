@@ -6,6 +6,7 @@ import Series from './pages/Series';
 import Jeux from './pages/Jeux';
 import Livres from './pages/Livres';
 import About from './pages/About';
+import Login from './pages/LogIn';
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path='/jeux' element={<Jeux />}/>
                 <Route path='/livres' element={<Livres />}/>
                 <Route path='/about' element={<About />}/>
+                <Route path='/login' element={<Login />}/>
             </Routes>
         </BrowserRouter>
     );
