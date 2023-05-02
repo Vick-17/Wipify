@@ -5,19 +5,13 @@
   transition: top 0.5s;
   width: 100%;
   display: flex;
+  z-index: 999;
 }
 .navbar {
   flex-wrap: wrap;
   justify-content: space-between;
   background-color: #1e1e2436;
   padding: 2%;
-  transform: translateY(-100%);
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-}
-
-.navbar.show{
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .navbar > ul {
