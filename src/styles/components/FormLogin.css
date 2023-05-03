@@ -11,6 +11,7 @@ button {
     background: #ffffff;
     text-align: center;
     transition: 0.4s;
+    margin: 20px;
   }
   
   .login-card > h2 {

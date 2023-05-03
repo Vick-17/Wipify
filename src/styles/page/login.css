@@ -4,5 +4,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.sidebar-container {
+  display: none;
+}
+.login-title {
+  margin-top: 1.1rem;
+  color: #ffffff;
+  text-align: center;
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .sidebar-container {
+    display: block;
+    margin-top: 0;
+  }
+  .login-title {
+    display: block;
+  }
+  .form {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
 }

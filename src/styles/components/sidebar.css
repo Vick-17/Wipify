@@ -1,0 +1,70 @@
+@media screen and (max-width: 1000px) {
+  .close-sidebar {
+    margin-top: 1.1rem;
+    position: fixed;
+    top: 0px;
+    left: 10px;
+    z-index: 2;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1e1f2698;
+  }
+  .sidebar {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    transform: translateX(-200px);
+    background-color: #1e1f26;
+    opacity: 0;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+  }
+
+  .sidebar.open {
+    z-index: 999;
+    opacity: 1;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
+  }
+
+  .sidebar.open::before {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar.open > ul {
+    margin-top: 2rem;
+  }
+
+  .side-list {
+    padding: 0.8rem;
+  }
+
+  .btn-login {
+    text-align: center;
+    color: #1e1f26e0;
+    background-color: #fff;
+    width: 10rem;
+    margin: auto;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 30px;
+  }
+}

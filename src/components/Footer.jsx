@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div>
       <div className="footer-container">
-        <div className="list-footer">
+        <div className="list-footer hiden-respon">
             <h5>A voir</h5>
           <ul className="voir list-prop">
           <NavLink to="/films" className={(nav) => (nav.isActive ? "foot-active" : "")}> 
@@ -22,7 +22,7 @@ const Footer = () => {
             </NavLink>
           </ul>
         </div>
-        <div className="list-footer">
+        <div className="list-footer responc-list">
             <h5>Assistance</h5>
           <ul className="assist list-prop">
           <NavLink to="/films" className={(nav) => (nav.isActive ? "foot-active" : "")}> 
@@ -38,11 +38,6 @@ const Footer = () => {
             <li className="foot-list">Signalement</li>
             </NavLink>
           </ul>
-        </div>
-        <div className="newsletter">
-            <h5>SE TENIR INFORMÉ</h5>
-            <input type="text" className="news-email" placeholder="adresse email" />
-            <button className="btn-news">S'abonner</button>
         </div>
       </div>
     </div>

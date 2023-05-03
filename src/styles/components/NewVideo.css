@@ -1,24 +1,49 @@
-.video-container{
-    text-align: center;
+.video-container {
+perspective: 1000px;
+  text-align: center;
 }
-.video-container > h5{
-    color: #fff;
-    font-size: xx-large;
-    font-weight: bold;
-    margin-bottom: 5%;
+.video-container > h5 {
+  color: #fff;
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 5%;
 }
-.newVideo{
-    display: flex;
-    max-width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-around;
+.newVideo {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-.video{
-padding: 1%;
-transform: translateX(-100%);
-transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+.video {
+  padding: 1%;
+  opacity: 0;
 }
-.video.visible{
-    opacity: 1;
-    transform: translateY(0);
+.video.visible {
+  opacity: 1;
+  transition: 1s;
 }
+.title-dance > h5{
+        animation: dance 1s ease infinite;
+        color: #fff;
+        font-size: xx-large;
+        font-weight: bold;
+        margin-bottom: 5%;
+}
+
+/*@keyframes dance {
+    0% {
+      transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+    25% {
+      transform: matrix(1, 0, 0, 1, -10, -10);
+    }
+    50% {
+      transform: matrix(0.707, 0.707, -0.707, 0.707, 0, 0);
+    }
+    75% {
+      transform: matrix(1, 0, 0, 1, 10, -10);
+    }
+    100% {
+      transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+  }*/

@@ -6,7 +6,6 @@ const BlocLastArticle = () => {
   const [showElement, setShowElement] = useState(false);
 
   useEffect(() => {
-    // Mettez à jour l'état pour afficher l'élément après un court délai.
     setTimeout(() => {
       setShowElement(true);
     }, 500);

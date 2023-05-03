@@ -35,9 +35,11 @@ export const FormLogin = () => {
     setShowLogin(!showLogin);
   };
 
+  
+
   return (
     <>
-      {showLogin ? ( // si showLogin est vrai, affiche la vue de connexion
+      {showLogin ? (
         <div className="login-card">
           <h2>Connexion</h2>
           <form className="login-form">

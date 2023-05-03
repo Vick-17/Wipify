@@ -15,7 +15,6 @@ const LiveTwitch = () => {
       if (currentScrollPos > triggerPosition && isScrollingDown) {
         setIsVisible(true);
       } else if (currentScrollPos < prevScrollPos) {
-        // User is scrolling up, do nothing
       } else {
         setIsVisible(false);
       }
