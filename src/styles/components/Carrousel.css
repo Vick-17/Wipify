@@ -1,0 +1,30 @@
+  .slick-dots {
+    display: flex !important;
+    justify-content: center;
+    list-style: none;
+  }
+  
+  .slick-dots li button {
+    display: block;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+    background-color: #ccc;
+    border-radius: 50%;
+    text-indent: -9999px;
+    cursor: pointer;
+  }
+  
+  .slick-dots li button:hover {
+    background-color: #555;
+  }
+  
+  .slick-dots li.slick-active button {
+    background-color: #555;
+  }
+  @media screen and (max-width: 1000px) {
+    .slick-dots li {
+      display: none;
+    }
+  }

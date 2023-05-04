@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import ButtonArticle from "../components/buttonArticle";
-import firstImage from "../img/zelda totk.jpg";
 
-const BlocLastArticle = () => {
+const BlocLastArticle = ({ title, date, image,content }) => {
   const [showElement, setShowElement] = useState(false);
 
   useEffect(() => {
@@ -12,16 +11,17 @@ const BlocLastArticle = () => {
   }, []);
 
   return (
-    <div>
-      <div className="top-bloc">
-        <div className={`bloc-title ${showElement ? "show" : ""}`} >
-          <span className="publie-date">03/11/19 CRITIQUE DE SORTIE</span>
-          <h2>Critique de jeu : un scénario de qualité pour Zelda</h2>
+    <div className="top-bloc">
+      <div className={`bloc-title ${showElement ? "show" : ""}`}>
+        <div className="content">
+          <span className="publie-date">{date}</span>
+          <h2>{title}</h2>
+          <p className="title-descr">
+            {content}
+          </p>
           <ButtonArticle />
         </div>
-        <div className={`img-title ${showElement ? "show" : ""}`}>
-          <img src={firstImage} alt="first-img" className="first-img" />
-        </div>
+        <img src={image} alt="img-title" className="img-title" />
       </div>
     </div>
   );
