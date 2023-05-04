@@ -1,5 +1,5 @@
 .goToArticle{
-    padding: 3%;
+    padding: 2%;
     border-radius: 100px;
     background-color: #e13c33;
     border: none;
@@ -7,8 +7,7 @@
     font-weight: bold;
     letter-spacing: 1px;
     margin-top: 3%;
-    font-size: 150%;
-    margin-bottom: 5px;
+    font-size: 100%;
 }
 
 @media screen and (max-width: 1000px){

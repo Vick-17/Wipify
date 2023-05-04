@@ -19,7 +19,7 @@ const BlocLastArticle = ({ title, date, image,content }) => {
           <p className="title-descr">
             {content}
           </p>
-          <ButtonArticle />
+            <ButtonArticle />
         </div>
         <img src={image} alt="img-title" className="img-title" />
       </div>
