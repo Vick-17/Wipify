@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/components/FormLogin.css";
 
 const strengthLabels = ["faible", "medium", "fort"];
 

@@ -4,6 +4,7 @@ import FormLogin from "../components/FormLogin";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Logo from "../components/Logo";
+import "../styles/page/login.css"
 
 const LogIn = () => {
   return (

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import "../styles/components/NewVideo.css";
 
 const NewVideo = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,6 +32,7 @@ const NewVideo = () => {
       <div className="newVideo">
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
+          className="youtube"
             width="559"
             height="314"
             src="https://www.youtube.com/embed/7wwglDzRTZY"
@@ -42,6 +44,7 @@ const NewVideo = () => {
         </div>
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
+          className="youtube"
             width="559"
             height="314"
             src="https://www.youtube.com/embed/Dv-7K_m589I"
@@ -53,6 +56,7 @@ const NewVideo = () => {
         </div>
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
+          className="youtube"
             width="559"
             height="314"
             src="https://www.youtube.com/embed/Dv-7K_m589I"
@@ -64,6 +68,7 @@ const NewVideo = () => {
         </div>
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
+          className="youtube"
             width="559"
             height="314"
             src="https://www.youtube.com/embed/Dv-7K_m589I"
@@ -75,6 +80,7 @@ const NewVideo = () => {
         </div>
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
+          className="youtube"
             width="559"
             height="314"
             src="https://www.youtube.com/embed/Dv-7K_m589I"
@@ -86,8 +92,7 @@ const NewVideo = () => {
         </div>
         <div className={`video ${isVisible ? "visible" : ""}`}>
           <iframe
-            width="559"
-            height="314"
+          className="youtube"
             src="https://www.youtube.com/embed/Dv-7K_m589I"
             title="YouTube video player"
             frameborder="0"

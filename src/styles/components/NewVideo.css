@@ -1,5 +1,5 @@
 .video-container {
-perspective: 1000px;
+  perspective: 1000px;
   text-align: center;
 }
 .video-container > h5 {
@@ -22,15 +22,31 @@ perspective: 1000px;
   opacity: 1;
   transition: 1s;
 }
-.title-dance > h5{
-        animation: dance 1s ease infinite;
-        color: #fff;
-        font-size: xx-large;
-        font-weight: bold;
-        margin-bottom: 5%;
+.title-dance > h5 {
+  animation: dance 1s ease infinite;
+  color: #fff;
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 5%;
 }
-
-/*@keyframes dance {
+.youtube {
+  width: 559px;
+  height: 314px;
+  padding: 2%;
+}
+@media screen and (max-width: 1000px) {
+  .title-dance > h5 {
+    font-size: 3.5vh;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+  }
+  .youtube {
+    width: 40vw;
+    height: 20vh;
+    padding: 2%;
+  }
+}
+/* @keyframes dance {
     0% {
       transform: matrix(1, 0, 0, 1, 0, 0);
     }
@@ -46,4 +62,4 @@ perspective: 1000px;
     100% {
       transform: matrix(1, 0, 0, 1, 0, 0);
     }
-  }*/
+  } */

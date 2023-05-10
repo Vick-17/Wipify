@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Logo from "../components/Logo";
 import CarrouselArticles from "../components/Carrousel";
+import "../styles/page/accueil.css"
 
 const Accueil = () => {
   return (

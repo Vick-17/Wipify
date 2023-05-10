@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
+import "../styles/components/navbar.css"
 
 const NavBar = () => {
     //annimation navbar chargement
@@ -30,7 +31,7 @@ const NavBar = () => {
         <Logo />
         <ul>
           <NavLink
-            to="/films"
+            to="/Jeux"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Jeux-vidéos</li>

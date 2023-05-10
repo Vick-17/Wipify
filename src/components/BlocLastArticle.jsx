@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ButtonArticle from "../components/buttonArticle";
+import "../styles/components/BlocLastArticle.css"
 
-const BlocLastArticle = ({ title, date, image,content }) => {
-  const [showElement, setShowElement] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowElement(true);
-    }, 500);
-  }, []);
-
+const BlocLastArticle = ({ title, date, image, content }) => {
   return (
     <div className="top-bloc">
-      <div className={`bloc-title ${showElement ? "show" : ""}`}>
+      <div className="bloc-title">
         <div className="content">
           <span className="publie-date">{date}</span>
           <h2>{title}</h2>
-          <p className="title-descr">
-            {content}
-          </p>
-            <ButtonArticle />
+          <p className="title-descr">{content}</p>
+          <ButtonArticle />
         </div>
         <img src={image} alt="img-title" className="img-title" />
       </div>

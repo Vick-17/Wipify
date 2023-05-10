@@ -1,14 +1,1 @@
 @import "./settings.css";
-@import "./components/ButtonArticle.css";
-@import "./components/navbar";
-@import "./components/sidebar.css";
-@import "./page/accueil.css";
-@import "./components/LiveTwitch.css";
-@import "./components/ButtonLive.css";
-@import "./components/BlocLastArticle.css";
-@import "./components/BannerTitle.css";
-@import "./components/NewVideo.css";
-@import "./components/Footer.css";
-@import "./components/FormLogin.css";
-@import "./page/login.css";
-@import "./components/Carrousel.css";

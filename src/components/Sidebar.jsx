@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import tinycolor from 'tinycolor2';
+import "../styles/components/sidebar.css"
 
 function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
