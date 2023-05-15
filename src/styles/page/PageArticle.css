@@ -1,0 +1,5 @@
+.article-body{
+    display: flex;
+    flex-direction: column;
+    margin: 5vw 5vw 5vw 5vw;
+}

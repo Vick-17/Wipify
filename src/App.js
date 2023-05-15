@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from './pages/Accueil';
-import Films from './pages/Films';
-import Series from './pages/Series';
 import Jeux from './pages/Jeux';
-import Livres from './pages/Livres';
-import About from './pages/About';
 import Login from './pages/LogIn';
+import Actu from './pages/Actualité';
+import Test from './pages/Test';
+import Video from './pages/Video';
+import Streaming from './pages/Streaming';
+import AjoutArticle from './pages/FormArticle';
 
 
 const App = () => {
@@ -15,11 +16,12 @@ const App = () => {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/Jeux' element={<Jeux />}/>
-                <Route path='/series' element={<Series />}/>
-                <Route path='/jeux' element={<Jeux />}/>
-                <Route path='/livres' element={<Livres />}/>
-                <Route path='/about' element={<About />}/>
+                <Route path='/news' element={<Actu />}/>
+                <Route path='/test' element={<Test />}/>
+                <Route path='/video' element={<Video />}/>
+                <Route path='/streaming' element={<Streaming />}/>
                 <Route path='/login' element={<Login />}/>
+                <Route path='/ajoutarticle' element={<AjoutArticle />}/>
             </Routes>
         </BrowserRouter>
     );

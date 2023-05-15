@@ -49,17 +49,6 @@
   text-decoration: none;
 }
 
-.nav-active:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2px;
-  background-color: white;
-  transform: scaleX(1);
-}
-
 @media only screen and (max-width: 1000px) {
   #navbar {
     display: none;

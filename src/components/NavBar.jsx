@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
-import "../styles/components/navbar.css"
+import "../styles/components/navbar.css";
 
 const NavBar = () => {
-    //annimation navbar chargement
-    const [showElement, setShowElement] = useState(false);
+  //annimation navbar chargement
+  const [showElement, setShowElement] = useState(false);
 
-    useEffect(() => {
-      setTimeout(() => {
-        setShowElement(true);
-      }, 500);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowElement(true);
+    }, 500);
+  }, []);
 
   //annimation navbar scroll
   var prevScrollpos = window.pageYOffset;
@@ -37,34 +37,40 @@ const NavBar = () => {
             <li className="nav-list">Jeux-vidéos</li>
           </NavLink>
           <NavLink
-            to="/series"
+            to="/news"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">News</li>
           </NavLink>
           <NavLink
-            to="/jeux"
+            to="/test"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Test</li>
           </NavLink>
           <NavLink
-            to="/livres"
+            to="/video"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Video</li>
           </NavLink>
           <NavLink
-            to="/about"
+            to="/streaming"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Streaming</li>
           </NavLink>
           <NavLink
-            to="login"
+            to="/login"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Login</li>
+          </NavLink>
+          <NavLink
+            to="/ajoutarticle"
+            className={(nav) => (nav.isActive ? "nav-active" : "")}
+          >
+            <li className="nav-list">Ajouter un article</li>
           </NavLink>
         </ul>
       </div>

@@ -8,7 +8,7 @@ const Article = ({ title, date, image, content }) => {
       <div className="img-article">
         <img src={image} alt="img-title" className="content-img" />
       </div>
-      <div className="content">
+      <div className="article-content">
         <div className="publi-date">{date}</div>
         <div className="title-article"><h5>{title}</h5></div>
         <div className="descr">{content}</div>

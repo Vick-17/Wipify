@@ -1,0 +1,82 @@
+.formulaire-container {
+    margin: 10vw;
+    background-color: #fff;
+    padding: 5vw;
+    border-radius: 50px;
+  }
+  
+
+  
+  label {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  input[type="text"],
+  textarea,
+  input[type="date"] {
+    border: 1.5px solid #dfe1f0;
+    outline: none;
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    background: #f6f7ff;
+    color: inherit;
+    border-radius: 6px;
+    margin: 8px 0;
+    font-family: inherit;
+    text-align: left;
+    font-size: 18px;
+    transition: 0.4s;
+  }
+  
+  input[type="submit"],
+  button.control {
+    cursor: pointer;
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    background: #454a8f;
+    color: #f7f7f7;
+    border: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 2px;
+    transition: all 0.375s;
+  }
+  
+  .invalid {
+    border-color: red;
+  }
+  
+  .word-count-container {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #868b94;
+  }
+  .word-count {
+    text-align: left;
+    height: 30px;
+    text-transform: capitalize;
+    color: green;
+    transition: color 0.4s;
+  }
+  
+  .word-count.invalid {
+    color: #ff3f3f;
+  }
+  
+  .word-count.warning {
+    color: #f39845;
+  }
+  
+  .word-count.limit {
+    color: #ebebeb;
+  }
+  
+  
