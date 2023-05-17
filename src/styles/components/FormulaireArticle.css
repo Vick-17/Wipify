@@ -78,5 +78,46 @@
   .word-count.limit {
     color: #ebebeb;
   }
+  /* FormulaireArticle.css */
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #454a8f;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+  background-color: #3b4080;
+}
+
+.button-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.remove-button{
+  background-color: rgb(196, 12, 12);
+  color: #fff;
+  width: 10rem;
+  height: 2rem;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
   
   

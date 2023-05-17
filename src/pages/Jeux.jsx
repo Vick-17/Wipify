@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "../styles/page/PageArticle.css";
+import "../styles/page/Jeux.css";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
-import Article from "../components/Article";
+import Article from "../components/Articles";
+import Loading from "../components/Loading";
 
 const Jeux = () => {
   const [videoGames, setVideoGames] = useState([]);
 
   async function fetchVideoGames() {
     try {
-      const response = await fetch("http://localhost:8000/videogames");
+      const response = await fetch("http://localhost:8000/articles");
       const data = await response.json();
       setVideoGames(data);
     } catch (error) {
@@ -33,17 +34,22 @@ const Jeux = () => {
       </div>
       <div className="article-body">
         {videoGames.length === 0 ? (
-          <p>Loading...</p>
+          <>
+            <Loading />
+          </>
         ) : (
           videoGames.map((game) => {
+            console.log(game.id);
             return (
-              <Article
-                key={game.id}
-                title={game.titre}
-                date={formatDate(game.publiDate)}
-                content={game.resume}
-                image={game.imageUrl}
-              />
+              <>
+                <Article
+                  id={game.id}
+                  title={game.title}
+                  date={formatDate(game.date)}
+                  content={game.resume}
+                  image={game.imageUrl}
+                />
+              </>
             );
           })
         )}

@@ -34,7 +34,7 @@ const NavBar = () => {
             to="/Jeux"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
-            <li className="nav-list">Jeux-vidéos</li>
+            <li className="nav-list">Les articles</li>
           </NavLink>
           <NavLink
             to="/news"
@@ -71,6 +71,12 @@ const NavBar = () => {
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Ajouter un article</li>
+          </NavLink>
+          <NavLink
+            to="/Admin"
+            className={(nav) => (nav.isActive ? "nav-active" : "")}
+          >
+            <li className="nav-list">Admin</li>
           </NavLink>
         </ul>
       </div>

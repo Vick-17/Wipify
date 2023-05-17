@@ -36,8 +36,6 @@ export const FormLogin = () => {
     setShowLogin(!showLogin);
   };
 
-  
-
   return (
     <>
       {showLogin ? (
@@ -120,7 +118,9 @@ export const FormLogin = () => {
             <button className="control" type="button">
               M'INSCRIRE
             </button>
-            <button className="goToLogSign" onClick={toggleForm}>Basculer vers la connexion</button>
+            <button className="goToLogSign" onClick={toggleForm}>
+              Basculer vers la connexion
+            </button>
           </form>
         </div>
       )}
