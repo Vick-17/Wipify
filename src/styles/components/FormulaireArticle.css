@@ -5,7 +5,9 @@
     border-radius: 50px;
   }
   
-
+  .form-editor{
+    margin: 10px auto;
+  }
   
   label {
     display: block;

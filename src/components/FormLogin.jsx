@@ -5,6 +5,44 @@ const strengthLabels = ["faible", "medium", "fort"];
 
 export const FormLogin = () => {
   const [strength, setStrength] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = {
+      name: name,
+      lastName: lastName,
+      email: email,
+      password: password,
+    };
+
+    try {
+      const responce = await fetch("http://localhost:8000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (responce.ok) {
+        console.log("INSCRIPTION REUSSI");
+        setName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+      } else {
+        console.log(
+          "erreur lors de l'envoid des données :",
+          responce.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données :", error);
+    }
+  };
 
   const getStrength = (password) => {
     let strengthIndic = -1,
@@ -73,6 +111,8 @@ export const FormLogin = () => {
           <form className="login-form">
             <div className="name">
               <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -83,6 +123,8 @@ export const FormLogin = () => {
             </div>
             <div className="lastName">
               <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -93,6 +135,8 @@ export const FormLogin = () => {
             </div>
             <div className="username">
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -102,12 +146,13 @@ export const FormLogin = () => {
               <div id="spinner" className="spinner"></div>
             </div>
             <input
+              value={password}
               name="password"
               spellCheck="false"
               className="control"
               type="password"
               placeholder="Password"
-              onChange={handleChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className={`bars ${strength}`}>
               <div></div>

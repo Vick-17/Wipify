@@ -2,9 +2,13 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  width: 800px;
+  width: 1200px;
   max-width: 100%;
-  margin: 7vh auto;
+  margin: 20vh auto;
+}
+.article-content{
+  width: 100%;
+  font-size: 20px;
 }
 .article-head {
   justify-content: center;
@@ -13,17 +17,12 @@
   flex-direction: column;
 }
 .article-title > h5 {
-  margin: 1vw 1vw 1vw 0vw;
+  margin: 1vw 1vw 0vw 0vw;
   font-size: 40px;
   font-weight: bold;
 }
 .article-image {
   width: 100%;
-}
-.article-image > img {
-  width: 50%;
-  float: left;
-  margin: 1vw 1vw 1vw 1vw;
 }
 .article-image > p {
   font-size: 20px;

@@ -78,6 +78,12 @@ const NavBar = () => {
           >
             <li className="nav-list">Admin</li>
           </NavLink>
+          <NavLink
+            to="/test"
+            className={(nav) => (nav.isActive ? "nav-active" : "")}
+          >
+            <li className="nav-list">test</li>
+          </NavLink>
         </ul>
       </div>
     </>

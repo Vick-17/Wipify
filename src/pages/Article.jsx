@@ -32,27 +32,21 @@ const Article = () => {
       <div className="sidebar-container">
         <Sidebar />
       </div>
-      <div className="article-container">
-        {article ? (
-          <>
-            <div className="article-container">
-              <div className="article-head">
-                <div className="article-date">{formatDate(article.date)}</div>
-                <div className="article-title">
-                  <h5>{article.title}</h5>
-                </div>
-              </div>
-              <div className="article-image">
-                <img src={article.imageUrl} alt="Article" />
-                <p>{article.content}</p>
-              </div>
-              <div className="article-content"></div>
+
+      {article ? (
+        <div className="article-container">
+          <div className="article-head">
+            <div className="article-date">{formatDate(article.date)}</div>
+            <div className="article-title">
+              <h5>{article.title}</h5>
             </div>
-          </>
-        ) : (
-          <div>Loading article...</div>
-        )}
-      </div>
+          </div>
+          <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}></div>
+        </div>
+      ) : (
+        <div>Loading article...</div>
+      )}
+
       <Footer />
     </>
   );
