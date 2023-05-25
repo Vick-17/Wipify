@@ -12,7 +12,14 @@ const Jeux = () => {
     try {
       const response = await fetch("http://localhost:8000/articles");
       const data = await response.json();
-      setVideoGames(data);
+
+      //Tri des aticles par ordre décroissant de date
+      const sortedArticle = data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      const lastestArticle = sortedArticle.slice(0, 10);
+
+      setVideoGames(lastestArticle);
     } catch (error) {
       console.error("Error fetching video games:", error);
     }
@@ -39,17 +46,15 @@ const Jeux = () => {
           </>
         ) : (
           videoGames.map((game) => {
-            console.log(game.id);
             return (
-              <>
-                <Article
-                  id={game.id}
-                  title={game.title}
-                  date={formatDate(game.date)}
-                  content={game.resume}
-                  image={game.imageUrl}
-                />
-              </>
+              <Article
+                key={game.id}
+                id={game.id}
+                title={game.title}
+                date={formatDate(game.date)}
+                content={game.resume}
+                image={game.imageUrl}
+              />
             );
           })
         )}

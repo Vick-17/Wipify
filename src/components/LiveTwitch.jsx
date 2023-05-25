@@ -10,8 +10,8 @@ const LiveTwitch = () => {
           <iframe
           className="live"
             src="https://player.twitch.tv/?channel=laink&parent=localhost"
-            frameborder="0"
-            allowfullscreen="true"
+            frameBorder="0"
+            allowFullscreen="true"
           ></iframe>
         </div>
         <div className="live-info">

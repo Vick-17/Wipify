@@ -9,6 +9,7 @@
 .article-content{
   width: 100%;
   font-size: 20px;
+  line-height: 2rem;
 }
 .article-head {
   justify-content: center;

@@ -1,13 +1,14 @@
 // Importation des librairies et composants nécessaires.
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "../styles/components/FormulaireArticle.css";
+import { useParams, useNavigate } from "react-router-dom";
 
 // Déclaration du composant FormulaireArticle.
 const FormulaireArticle = () => {
   // Utilisation de useRef pour accéder au contenu de l'éditeur de texte.
   const editorRef = useRef(null);
-  
+
   // Fonction pour logger le contenu de l'éditeur.
   const log = () => {
     if (editorRef.current) {
@@ -19,7 +20,12 @@ const FormulaireArticle = () => {
   const [titre, setTitre] = useState("");
   const [resume, setResume] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [editorContent, setEditorContent] = useState("");
   const [wordCount, setWordCount] = useState(0);
+  const [article, setArticle] = useState(null);
+  const {id} = useParams();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const navigate = useNavigate();
 
   // Gestionnaire d'événements pour changer le résumé et le nombre de mots.
   const handleResumeChange = (e) => {
@@ -28,8 +34,43 @@ const FormulaireArticle = () => {
     setWordCount(value.trim().length);
   };
 
+  const handleEdit = async (e) => {
+    console.log("coucou")
+    e.preventDefault();
+    const formData = {
+      id: id,
+      title: titre,
+      content: editorRef.current.getContent(),
+      resume: resume,
+      imageUrl: imageUrl,
+    };
+    console.log(formData);
+    try{
+      const responce = await fetch(`http://localhost:8000/article/${id}`, {
+        method: "PUT",
+        headers:{
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (responce.ok) {
+        console.log("Données mises à jour avec succès !");
+        navigate(`/Jeux/${id}`);
+      } else {
+        console.error(
+          "Erreur lors de la mise à jour des données :",
+          responce.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des données :", error);
+    }
+  };
+
   // Fonction pour gérer la soumission du formulaire.
   const handleSubmit = async (e) => {
+    console.log("coucou 2")
     e.preventDefault();
     const formData = {
       title: titre,
@@ -67,6 +108,31 @@ const FormulaireArticle = () => {
     }
   };
 
+  useEffect(() => {
+
+    if(id !== undefined){
+      setIsEditMode(true);
+    const fetchArticle = async () => {
+      try {
+        const responce = await fetch(`http://localhost:8000/article/${id}`);
+        const data = await responce.json();
+        
+        setArticle(data);
+        setTitre(data.title);
+        setResume(data.resume);
+        setImageUrl(data.imageUrl);
+        setEditorContent(data.content);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des détails de l'article :",
+          error
+        );
+      }
+    };
+    fetchArticle();
+    }
+  }, [id]);
+
   // Fonction pour obtenir la couleur de l'indicateur du compte de mots en fonction du nombre de mots.
   const getWordCountColor = () => {
     if (wordCount >= 150) {
@@ -87,12 +153,12 @@ const FormulaireArticle = () => {
     <div>
       <div className="formulaire-container">
         <h1>Ajout d'article</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={ isEditMode ? handleEdit : handleSubmit}>
           <label htmlFor="titre">Titre :</label>
           <input
             type="text"
             id="titre"
-            value={titre}
+            value={titre || (article && article.title) || ""}
             onChange={(e) => setTitre(e.target.value)}
             required
           />
@@ -106,7 +172,7 @@ const FormulaireArticle = () => {
                 process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"
               }
               onInit={(evt, editor) => (editorRef.current = editor)}
-              initialValue="<p>This is the initial content of the editor.</p>"
+              initialValue={editorContent}
               init={{
                 height: 600,
                 menubar: "insert",
@@ -148,7 +214,7 @@ const FormulaireArticle = () => {
             <textarea
               id="resume"
               style={{ whiteSpace: "pre-wrap" }}
-              value={resume}
+              value={resume || (article && article.resume) || ""}
               onChange={handleResumeChange}
               maxLength={150}
               required
@@ -164,13 +230,13 @@ const FormulaireArticle = () => {
           <input
             type="text"
             id="image_url"
-            value={imageUrl}
+            value={imageUrl || (article && article.imageUrl) || ""}
             onChange={(e) => setImageUrl(e.target.value)}
             required
           />
 
           <div className="button-container">
-            <input type="submit" value="Ajouter" disabled={!isResumeValid} />
+            <input type="submit" value={isEditMode ? "Modifier" : "Ajouter"} disabled={!isResumeValid} />
           </div>
         </form>
       </div>

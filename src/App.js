@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/streaming" element={<Streaming />} />
         <Route path="/login" element={<Login />} />
         <Route path="/ajoutarticle" element={<AjoutArticle />} />
+        <Route path="/updateArticle/:id" element={<AjoutArticle />} />
         <Route path="/Admin" element={<AdminPage />} />
         <Route path="/test" element={<Test />} />
       </Routes>
