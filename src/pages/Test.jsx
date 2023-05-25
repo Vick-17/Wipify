@@ -1,62 +1,68 @@
-import React, { useRef } from "react";
-import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
-import { Editor } from "@tinymce/tinymce-react";
-import "../styles/page/test.css";
+import React, { useState } from "react";
 
 const Test = () => {
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Création de l'objet représentant les données de connexion
+    const formData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/connexion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Connexion réussie
+        console.log("Connexion réussie");
+      } else {
+        // Erreur de connexion
+        const errorMessage = await response.text();
+        setError(errorMessage);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion :", error);
     }
   };
+
   return (
     <div>
-      <NavBar />
-      <div className="sidebar-container">
-        <Sidebar />
-      </div>
-      <div className="form-editor">
-        <Editor
-          tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
-          onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue="<p>This is the initial content of the editor.</p>"
-          init={{
-            height: 500,
-            menubar: "insert",
-            plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "preview",
-              "help",
-              "wordcount",
-            ],
-            toolbar:
-              "undo redo | blocks | " +
-              "image | " +
-              "bold italic forecolor | alignleft aligncenter " +
-              "alignright alignjustify | bullist numlist outdent indent | " +
-              "removeformat | help",
-            content_style:
-              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-              images_file_types: "jpg,svg,webp",
-          }}
-        />
-        <button onClick={log}>Log editor content</button>
-      </div>
+      <h2>Connexion</h2>
+      {error && <p>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Se connecter</button>
+      </form>
     </div>
   );
 };

@@ -37,7 +37,7 @@ export const FormLogin = () => {
     if (showLogin) {
       // Demande de connexion
       formData.email = email;
-      url = "http://localhost:8000/login";
+      url = "http://localhost:8000/connexion";
     } else {
       // Demande d'inscription
       url = "http://localhost:8000/user";
@@ -119,8 +119,8 @@ export const FormLogin = () => {
           <form className="login-form">
             <div className="username">
               <input
-                value={nom}
-                onChange={(e) => setName(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -138,7 +138,7 @@ export const FormLogin = () => {
               type="password"
               placeholder="Mot de passe"
             />
-            <button className="control" type="button">
+            <button className="control" type="submit">
               SE CONNECTER
             </button>
             <button onClick={toggleForm}>Basculer vers l'inscription</button>
@@ -216,7 +216,7 @@ export const FormLogin = () => {
               className="control"
               type="password"
               placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {setPassword(e.target.value); handleChange(e)}}
             />
             <div className={`bars ${strength}`}>
               <div></div>
