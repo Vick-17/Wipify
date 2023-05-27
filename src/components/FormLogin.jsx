@@ -65,7 +65,7 @@ export const FormLogin = () => {
         setPseudo("");
         setNumero("");
       } else {
-        console.log(
+        console.log(                      
           "Erreur lors de l'envoi des données :",
           response.statusText
         );

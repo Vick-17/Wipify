@@ -4,7 +4,7 @@ import "../styles/components/ButtonArticle.css";
 
 const ButtonArticle = ({ articleId }) => {
   const handleClick = () => {
-    console.log("Article ID:", articleId); // Vérification de l'ID dans la console
+    console.log("Article ID:", articleId);
   };
 
   return (

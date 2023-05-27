@@ -3,18 +3,23 @@ import { NavLink } from "react-router-dom";
 import "../styles/components/Article.css";
 
 const Articles = ({ id, title, date, image, content }) => {
+  // Fonction pour gérer la suppression de l'article
   const handleDelete = async () => {
     try {
+      // Envoi de la requête DELETE à l'API pour supprimer l'article
       const response = await fetch(`http://localhost:8000/article/${id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
+        // Si la suppression est réussie, afficher un message de succès
         console.log("Article supprimé avec succès !");
       } else {
+        // Sinon, afficher une erreur avec le message renvoyé par l'API
         console.error("Erreur lors de la suppression de l'article :", response.statusText);
       }
     } catch (error) {
+      // En cas d'erreur lors de la requête, afficher l'erreur
       console.error("Erreur lors de la suppression de l'article :", error);
     }
   };

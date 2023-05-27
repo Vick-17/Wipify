@@ -8,17 +8,20 @@ import thirdImage from "../img/amored.jpg";
 import fourthImage from "../img/eldenring.jpg";
 import fifthImage from "../img/mario.jpg";
 import sixImage from "../img/soulframe.jpg";
-import "../styles/components/Carrousel.css"
+import "../styles/components/Carrousel.css";
 
 const CarrouselArticles = () => {
+  // État pour afficher ou masquer le carrousel
   const [showElement, setShowElement] = useState(false);
 
   useEffect(() => {
+    // Utilisation de setTimeout pour afficher le carrousel après un délai de 500 millisecondes
     setTimeout(() => {
       setShowElement(true);
     }, 500);
   }, []);
 
+  // État pour gérer l'index de la diapositive active
   const [slideIndex, setSlideIndex] = useState(0);
 
   const settings = {
@@ -34,47 +37,46 @@ const CarrouselArticles = () => {
 
   return (
     <Slider className={`slider ${showElement ? "show" : ""}`} {...settings}>
-        <BlocLastArticle
-          title="Critique de jeu : un scénario de qualité pour Zelda"
-          date="03/11/19 CRITIQUE DE SORTIE"
-          content="On vient d'apprendre une bonne nouvelle pour les joueurs Switch qui souhaitent se procurer le prochain Zelda !"
-          image={secondImage}
-        />
+      <BlocLastArticle
+        title="Critique de jeu : un scénario de qualité pour Zelda"
+        date="03/11/19 CRITIQUE DE SORTIE"
+        content="On vient d'apprendre une bonne nouvelle pour les joueurs Switch qui souhaitent se procurer le prochain Zelda !"
+        image={secondImage}
+      />
 
-        <BlocLastArticle
-          title="Armored Core 6 : Elden Ring dans le futur ? From Software nous dit tout ! "
-          content="Alors qu’Elden Ring s’apprête à accueillir son 1er DLC - nous avons pu assister à une présentation exclusive d’Armored Core VI, nouveau projet du studio FromSoftware. 
+      <BlocLastArticle
+        title="Armored Core 6 : Elden Ring dans le futur ? From Software nous dit tout ! "
+        content="Alors qu’Elden Ring s’apprête à accueillir son 1er DLC - nous avons pu assister à une présentation exclusive d’Armored Core VI, nouveau projet du studio FromSoftware. 
           Du gameplay au multijoueur, en passant par les boss, l’aspect personnalisation, 
           les producteurs | le réalisateur nous disent tout."
-          date="20/12/19"
-          image={thirdImage}
-        />
+        date="20/12/19"
+        image={thirdImage}
+      />
 
-        <BlocLastArticle
-          title="Elden Ring : Tuer des boss avec des avions de chasse ? C'est possible !"
-          date="10/01/20"
-          content="Si on vous disait qu’il était possible de contrôler un avion de chasse dans l’univers du soulslike de FromSoftware ? 
+      <BlocLastArticle
+        title="Elden Ring : Tuer des boss avec des avions de chasse ? C'est possible !"
+        date="10/01/20"
+        content="Si on vous disait qu’il était possible de contrôler un avion de chasse dans l’univers du soulslike de FromSoftware ? 
           Vous ne rêvez pas, Elden Ring peut désormais être joué d’une toute autre manière grâce à cette création plus qu’insolite ! "
-          image={fourthImage}
-        />
+        image={fourthImage}
+      />
 
-        <BlocLastArticle
-          title="Super Mario Bros, le film qui valait un milliard"
-          date="01/02/20"
-          content="C'est plié : après avoir été le premier film tiré d'une licence jeu vidéo à dépasser les 500 millions de dollars au box office mondial, 
+      <BlocLastArticle
+        title="Super Mario Bros, le film qui valait un milliard"
+        date="01/02/20"
+        content="C'est plié : après avoir été le premier film tiré d'une licence jeu vidéo à dépasser les 500 millions de dollars au box office mondial, 
           le Super Mario Bros. de Nintendo, 
           Universal et Illumination rentre dans l'histoire du cinéma en dépassant la barre du milliard de dollars et ce en même pas un mois."
-          image={fifthImage}
-        />
+        image={fifthImage}
+      />
 
-        <BlocLastArticle
-          title="Digital Extremes dévoile un premier extrait de gameplay de Soulframe"
-          date="15/03/20"
-          content="L'été dernier, Digital Extremes annonçait le développement de Soulframe, 
+      <BlocLastArticle
+        title="Digital Extremes dévoile un premier extrait de gameplay de Soulframe"
+        date="15/03/20"
+        content="L'été dernier, Digital Extremes annonçait le développement de Soulframe, 
           un jeu d'action reposant sur des combats de mêlée « lents et lourds ». Le studio livre un premier extrait de gameplay en vidéo."
-          image={sixImage}
-        />
-
+        image={sixImage}
+      />
     </Slider>
   );
 };
