@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Test = () => {
-  const [email, setEmail] = useState("");
+  const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -10,26 +10,28 @@ const Test = () => {
 
     // Création de l'objet représentant les données de connexion
     const formData = {
-      email: email,
+      username: pseudo,
       password: password,
     };
 
     try {
-      const response = await fetch("http://localhost:8000/connexion", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        
       });
 
       if (response.ok) {
         // Connexion réussie
-        console.log("Connexion réussie");
+        console.log("Connexion réussie", formData);
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();
         setError(errorMessage);
+        console.log(formData);
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
@@ -42,12 +44,12 @@ const Test = () => {
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="pseudo">Pseudo</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="pseudo"
+            value={pseudo}
+            onChange={(e) => setPseudo(e.target.value)}
             required
           />
         </div>

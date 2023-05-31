@@ -19,59 +19,71 @@ export const FormLogin = () => {
   const [password, setPassword] = useState("");
   const [pseudo, setPseudo] = useState("");
   const [telephone, setNumero] = useState("");
-
-  // Gestion de la soumission du formulaire
-  const handleSubmit = async (e) => {
+  const [error, setError] = useState("");
+  
+  const handleLoginSubmit = async (e) => {
+    // Gestion de la soumission du formulaire de connexion
     e.preventDefault();
     const formData = {
-      nom: nom,
-      prenom: prenom,
-      email: email,
+      username: pseudo,
       password: password,
-      pseudo: pseudo,
-      telephone: telephone
     };
-
-    let url = "";
-
-    if (showLogin) {
-      // Demande de connexion
-      formData.email = email;
-      url = "http://localhost:8000/connexion";
-    } else {
-      // Demande d'inscription
-      url = "http://localhost:8000/user";
-    }
-
+  
     try {
-      const response = await fetch(url, {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
-        if (showLogin) {
-          console.log("CONNEXION RÉUSSIE");
-        } else {
-          console.log("INSCRIPTION RÉUSSIE");
-        }
-        setName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setPseudo("");
-        setNumero("");
+        // Connexion réussie
+        console.log("Connexion réussie", formData);
       } else {
-        console.log(                      
-          "Erreur lors de l'envoi des données :",
-          response.statusText
-        );
+        // Erreur de connexion
+        const errorMessage = await response.text();
+        setError(errorMessage);
+        console.log(formData)
       }
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données :", error);
+      console.error("Erreur lors de la connexion :", error);
+    }
+  };
+  
+  const handleSignupSubmit = async (e) => {
+    // Gestion de la soumission du formulaire d'inscription
+    e.preventDefault();
+    const formData = {
+      nom: nom,
+      prenom: prenom,
+      pseudo: pseudo,
+      email: email,
+      password: password,
+      telephone: telephone,
+
+    };
+  
+    try {
+      const response = await fetch("http://localhost:8000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        // Inscription réussie
+        console.log("Inscription réussie", formData);
+      } else {
+        // Erreur d'inscription
+        const errorMessage = await response.text();
+        setError(errorMessage);
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'inscription :", error);
     }
   };
 
@@ -107,7 +119,7 @@ export const FormLogin = () => {
   const [showLogin, setShowLogin] = useState(true);
 
   // Basculer entre le formulaire de connexion et d'inscription
-  const toggleForm = () => {
+  const toggleFormHide = () => {
     setShowLogin(!showLogin);
   };
 
@@ -116,11 +128,12 @@ export const FormLogin = () => {
       {showLogin ? (
         <div className="login-card">
           <h2>Connexion</h2>
-          <form className="login-form">
+          {error && <p>{error}</p>}
+          <form className="login-form" onSubmit={handleLoginSubmit}>
             <div className="username">
               <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={pseudo}
+                onChange={(e) => setPseudo(e.target.value)}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -141,14 +154,14 @@ export const FormLogin = () => {
             <button className="control" type="submit">
               SE CONNECTER
             </button>
-            <button onClick={toggleForm}>Basculer vers l'inscription</button>
+            <button onClick={toggleFormHide}>Basculer vers l'inscription</button>
           </form>
         </div>
       ) : (
         // sinon, affiche la vue d'inscription
         <div className="login-card">
           <h2>Inscription</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
+          <form className="login-form" onSubmit={handleSignupSubmit}>
             <div className="name">
               <input
                 value={nom}
@@ -227,7 +240,7 @@ export const FormLogin = () => {
             <button className="control" type="submit">
               M'INSCRIRE
             </button>
-            <button className="goToLogSign" onClick={toggleForm}>
+            <button className="goToLogSign" onClick={toggleFormHide}>
               Basculer vers la connexion
             </button>
           </form>
