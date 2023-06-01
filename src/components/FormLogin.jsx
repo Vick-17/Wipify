@@ -6,9 +6,39 @@ Il affiche également un indicateur de force du mot de passe.
 
 import React, { useState } from "react";
 import "../styles/components/FormLogin.css";
+import 'setimmediate';
+import nodemailer from "nodemailer-browser";
 
 // Labels de force du mot de passe
 const strengthLabels = ["faible", "moyenne", "forte"];
+
+const sendConfimartionEmail = (nom, prenom, email, confirmationLink) => {
+  const transporter = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "f30005b12cba7e",
+      pass: "b80290cf9b7014",
+    },
+  });
+
+  const mailOption = {
+    from: "Wipify@exemple.com",
+    to: email,
+    subject: "Confimartion de votre inscription",
+    html: `<p>Bonjour ${prenom} ${nom},</p>
+    <p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
+    <a href="${confirmationLink}">Confirmer mon inscription</a>`,
+  };
+
+  transporter.sendMail(mailOption, (error, info) => {
+    if (error) {
+      console.error("erreur lors de lenvoi de mail de confirmation :", error);
+    } else {
+      console.log("e-mail de confirmation envoyé :", info.responce);
+    }
+  });
+};
 
 export const FormLogin = () => {
   // États des champs du formulaire
@@ -20,7 +50,7 @@ export const FormLogin = () => {
   const [pseudo, setPseudo] = useState("");
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
-  
+
   const handleLoginSubmit = async (e) => {
     // Gestion de la soumission du formulaire de connexion
     e.preventDefault();
@@ -28,7 +58,7 @@ export const FormLogin = () => {
       username: pseudo,
       password: password,
     };
-  
+
     try {
       const response = await fetch("http://localhost:8000/login", {
         method: "POST",
@@ -37,7 +67,7 @@ export const FormLogin = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         // Connexion réussie
         console.log("Connexion réussie", formData);
@@ -45,13 +75,13 @@ export const FormLogin = () => {
         // Erreur de connexion
         const errorMessage = await response.text();
         setError(errorMessage);
-        console.log(formData)
+        console.log(formData);
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
     }
   };
-  
+
   const handleSignupSubmit = async (e) => {
     // Gestion de la soumission du formulaire d'inscription
     e.preventDefault();
@@ -62,9 +92,8 @@ export const FormLogin = () => {
       email: email,
       password: password,
       telephone: telephone,
-
     };
-  
+
     try {
       const response = await fetch("http://localhost:8000/user", {
         method: "POST",
@@ -73,10 +102,12 @@ export const FormLogin = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         // Inscription réussie
         console.log("Inscription réussie", formData);
+        const confirmationLink = response.headers.get("Confirmation-Link");
+        sendConfimartionEmail(nom, prenom, email, confirmationLink);
       } else {
         // Erreur d'inscription
         const errorMessage = await response.text();
@@ -154,7 +185,9 @@ export const FormLogin = () => {
             <button className="control" type="submit">
               SE CONNECTER
             </button>
-            <button onClick={toggleFormHide}>Basculer vers l'inscription</button>
+            <button onClick={toggleFormHide}>
+              Basculer vers l'inscription
+            </button>
           </form>
         </div>
       ) : (
@@ -229,7 +262,10 @@ export const FormLogin = () => {
               className="control"
               type="password"
               placeholder="Password"
-              onChange={(e) => {setPassword(e.target.value); handleChange(e)}}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                handleChange(e);
+              }}
             />
             <div className={`bars ${strength}`}>
               <div></div>
