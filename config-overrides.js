@@ -12,11 +12,11 @@ module.exports = function override(config) {
     url: require.resolve("url"),
     zlib: require.resolve("browserify-zlib"),
     constants: require.resolve("constants-browserify"),
-    net: false, 
+    net: false,
     tls: false,
-    fs: false, 
-    dns: false, 
-    path:false,
+    fs: false,
+    dns: false,
+    path: false,
     child_process: false,
   });
   config.resolve.fallback = fallback;

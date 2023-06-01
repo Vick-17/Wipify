@@ -7,38 +7,32 @@ Il affiche également un indicateur de force du mot de passe.
 import React, { useState } from "react";
 import "../styles/components/FormLogin.css";
 import 'setimmediate';
-import nodemailer from "nodemailer-browser";
+import emailjs from "emailjs-com";
+
+const sendEmail = (formData) => {
+  const serviceId = "service_o8p8oku";
+  const templateId = "template_hr9q6ek";
+  const userId = "c6rkYaZsGbNS0Yd6Z";
+
+  const templateParams = {
+    to_name: formData.nom,
+    from_name: "Wipify",
+    message: `Bienvenue à l'inscription ! Cliquez sur le lien suivant pour confirmer votre compte : <a href="${formData.confirmationLink}">Confirmer</a>`
+  };
+
+  emailjs.send(serviceId, templateId,templateParams, userId)
+  .then((response) => {
+    console.log("email Envoyé", response.status, response.text);
+  })
+  .catch((error) => {
+    console.error("Erreur lors de l'envoi de l'e-mail :", error);
+  } )
+
+}
 
 // Labels de force du mot de passe
 const strengthLabels = ["faible", "moyenne", "forte"];
 
-const sendConfimartionEmail = (nom, prenom, email, confirmationLink) => {
-  const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-      user: "f30005b12cba7e",
-      pass: "b80290cf9b7014",
-    },
-  });
-
-  const mailOption = {
-    from: "Wipify@exemple.com",
-    to: email,
-    subject: "Confimartion de votre inscription",
-    html: `<p>Bonjour ${prenom} ${nom},</p>
-    <p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :</p>
-    <a href="${confirmationLink}">Confirmer mon inscription</a>`,
-  };
-
-  transporter.sendMail(mailOption, (error, info) => {
-    if (error) {
-      console.error("erreur lors de lenvoi de mail de confirmation :", error);
-    } else {
-      console.log("e-mail de confirmation envoyé :", info.responce);
-    }
-  });
-};
 
 export const FormLogin = () => {
   // États des champs du formulaire
@@ -50,6 +44,7 @@ export const FormLogin = () => {
   const [pseudo, setPseudo] = useState("");
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
+  const [confirmationCode, setConfirmationCode] = useState("");
 
   const handleLoginSubmit = async (e) => {
     // Gestion de la soumission du formulaire de connexion
@@ -92,6 +87,7 @@ export const FormLogin = () => {
       email: email,
       password: password,
       telephone: telephone,
+      confirmationCode: confirmationCode
     };
 
     try {
@@ -104,10 +100,9 @@ export const FormLogin = () => {
       });
 
       if (response.ok) {
-        // Inscription réussie
+        console.log(response.text)
         console.log("Inscription réussie", formData);
-        const confirmationLink = response.headers.get("Confirmation-Link");
-        sendConfimartionEmail(nom, prenom, email, confirmationLink);
+        sendEmail(formData)
       } else {
         // Erreur d'inscription
         const errorMessage = await response.text();
