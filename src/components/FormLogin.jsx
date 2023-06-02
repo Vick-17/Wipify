@@ -6,7 +6,7 @@ Il affiche également un indicateur de force du mot de passe.
 
 import React, { useState } from "react";
 import "../styles/components/FormLogin.css";
-import 'setimmediate';
+import "setimmediate";
 import emailjs from "emailjs-com";
 
 const sendEmail = (formData) => {
@@ -17,22 +17,21 @@ const sendEmail = (formData) => {
   const templateParams = {
     to_name: formData.nom,
     from_name: "Wipify",
-    message: `Bienvenue à l'inscription ! Cliquez sur le lien suivant pour confirmer votre compte : <a href="${formData.confirmationLink}">Confirmer</a>`
+    confirmationCode: formData.confirmationCode,
   };
 
-  emailjs.send(serviceId, templateId,templateParams, userId)
-  .then((response) => {
-    console.log("email Envoyé", response.status, response.text);
-  })
-  .catch((error) => {
-    console.error("Erreur lors de l'envoi de l'e-mail :", error);
-  } )
-
-}
+  emailjs
+    .send(serviceId, templateId, templateParams, userId)
+    .then((response) => {
+      console.log("email Envoyé", response.status, response.text);
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'envoi de l'e-mail :", error);
+    });
+};
 
 // Labels de force du mot de passe
 const strengthLabels = ["faible", "moyenne", "forte"];
-
 
 export const FormLogin = () => {
   // États des champs du formulaire
@@ -87,7 +86,7 @@ export const FormLogin = () => {
       email: email,
       password: password,
       telephone: telephone,
-      confirmationCode: confirmationCode
+      confirmationCode: confirmationCode,
     };
 
     try {
@@ -100,9 +99,11 @@ export const FormLogin = () => {
       });
 
       if (response.ok) {
-        console.log(response.text)
-        console.log("Inscription réussie", formData);
-        sendEmail(formData)
+        const responceText = await response.text();
+        console.log("Inscription réussie");
+        formData.confirmationCode = responceText;
+        sendEmail(formData);
+        console.log(formData);
       } else {
         // Erreur d'inscription
         const errorMessage = await response.text();
