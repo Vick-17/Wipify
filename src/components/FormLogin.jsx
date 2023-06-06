@@ -1,37 +1,8 @@
-/*
-Ce composant est un formulaire de connexion/inscription.
-Il gère les états des champs de formulaire et envoie les données saisies au serveur.
-Il affiche également un indicateur de force du mot de passe.
-*/
-
 import React, { useState } from "react";
 import "../styles/components/FormLogin.css";
 import "setimmediate";
+import {useNavigate} from "react-router-dom";
 import emailjs from "emailjs-com";
-
-const sendEmail = (formData) => {
-  const serviceId = "service_o8p8oku";
-  const templateId = "template_hr9q6ek";
-  const userId = "c6rkYaZsGbNS0Yd6Z";
-
-  const templateParams = {
-    to_name: formData.nom,
-    from_name: "Wipify",
-    confirmationCode: formData.confirmationCode,
-  };
-
-  emailjs
-    .send(serviceId, templateId, templateParams, userId)
-    .then((response) => {
-      console.log("email Envoyé", response.status, response.text);
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'envoi de l'e-mail :", error);
-    });
-};
-
-// Labels de force du mot de passe
-const strengthLabels = ["faible", "moyenne", "forte"];
 
 export const FormLogin = () => {
   // États des champs du formulaire
@@ -44,27 +15,54 @@ export const FormLogin = () => {
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
+  const navigate = useNavigate();
+
+
+  const sendEmail = (formData) => {
+    const serviceId = "service_o8p8oku";
+    const templateId = "template_hr9q6ek";
+    const userId = "c6rkYaZsGbNS0Yd6Z";
+  
+    const templateParams = {
+      to_name: formData.nom,
+      from_name: "Wipify",
+      confirmationCode: formData.confirmationCode,
+    };
+  
+    emailjs
+      .send(serviceId, templateId, templateParams, userId)
+      .then((response) => {
+        console.log("email Envoyé", response.status, response.text);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de l'envoi de l'e-mail :", error);
+      });
+  };
+  
+  // Labels de force du mot de passe
+  const strengthLabels = ["faible", "moyenne", "forte"];
 
   const handleLoginSubmit = async (e) => {
-    // Gestion de la soumission du formulaire de connexion
     e.preventDefault();
     const formData = {
       username: pseudo,
       password: password,
     };
-
+  
     try {
-      const response = await fetch("http://localhost:8000/login", {
+      const response = await fetch("http://localhost:8000/connexion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         // Connexion réussie
-        console.log("Connexion réussie", formData);
+        console.log("Connexion réussie");
+        // Rediriger vers la page d'accueil ou toute autre page souhaitée
+        navigate("/accueil");
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();
