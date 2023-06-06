@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/components/FormLogin.css";
 import "setimmediate";
-import {useNavigate} from "react-router-dom";
 import emailjs from "emailjs-com";
 
 export const FormLogin = () => {
@@ -15,20 +14,18 @@ export const FormLogin = () => {
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
-  const navigate = useNavigate();
-
 
   const sendEmail = (formData) => {
     const serviceId = "service_o8p8oku";
     const templateId = "template_hr9q6ek";
     const userId = "c6rkYaZsGbNS0Yd6Z";
-  
+
     const templateParams = {
       to_name: formData.nom,
       from_name: "Wipify",
       confirmationCode: formData.confirmationCode,
     };
-  
+
     emailjs
       .send(serviceId, templateId, templateParams, userId)
       .then((response) => {
@@ -38,7 +35,7 @@ export const FormLogin = () => {
         console.error("Erreur lors de l'envoi de l'e-mail :", error);
       });
   };
-  
+
   // Labels de force du mot de passe
   const strengthLabels = ["faible", "moyenne", "forte"];
 
@@ -48,26 +45,25 @@ export const FormLogin = () => {
       username: pseudo,
       password: password,
     };
-  
+
     try {
-      const response = await fetch("http://localhost:8000/connexion", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         // Connexion réussie
+        const token = response.headers.get("access_token");
+        localStorage.setItem("userToken", token);
         console.log("Connexion réussie");
-        // Rediriger vers la page d'accueil ou toute autre page souhaitée
-        navigate("/accueil");
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();
         setError(errorMessage);
-        console.log(formData);
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
@@ -163,7 +159,7 @@ export const FormLogin = () => {
                 spellCheck="false"
                 className="control"
                 type="text"
-                placeholder="pseudo"
+                placeholder="Pseudo"
               />
               <div id="spinner" className="spinner"></div>
             </div>
