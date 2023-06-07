@@ -1,26 +1,34 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/components/Article.css";
+import jwt_decode from "jwt-decode";
 
 const Articles = ({ id, title, date, image, content }) => {
-  // Fonction pour gérer la suppression de l'article
+  const token = localStorage.getItem("userToken");
+  const decodedToken = jwt_decode(token);
+  const role = decodedToken.roles;
   const handleDelete = async () => {
     try {
-      // Envoi de la requête DELETE à l'API pour supprimer l'article
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
       const response = await fetch(`http://localhost:8000/article/${id}`, {
+        headers: headers,
         method: "DELETE",
       });
 
-      if (response.ok) {
-        // Si la suppression est réussie, afficher un message de succès
+      if (response.ok && role[0] === "ROLE_ADMIN") {
         console.log("Article supprimé avec succès !");
       } else {
-        // Sinon, afficher une erreur avec le message renvoyé par l'API
-        console.error("Erreur lors de la suppression de l'article :", response.statusText);
+        console.error(
+          "Erreur lors de la suppression de l'article :",
+          response.statusText
+        );
       }
     } catch (error) {
-      // En cas d'erreur lors de la requête, afficher l'erreur
       console.error("Erreur lors de la suppression de l'article :", error);
+      console.error("Vous ne posserder pas les droit");
     }
   };
 
@@ -39,10 +47,14 @@ const Articles = ({ id, title, date, image, content }) => {
           <NavLink to={`/Jeux/${id}`} className="btnGoArticle">
             <button className="goToArticle">En voir plus</button>
           </NavLink>
-          <NavLink to={`/updateArticle/${id}`}>
-            <button>Modifier</button>
-          </NavLink>
-          <button onClick={handleDelete}>Supprimer</button>
+          {role[0] === "ROLE_ADMIN" && (
+            <>
+              <NavLink to={`/updateArticle/${id}`}>
+                <button>Modifier</button>
+              </NavLink>
+              <button onClick={handleDelete}>Supprimer</button>
+            </>
+          )}
         </div>
       </div>
     </div>
