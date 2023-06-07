@@ -9,7 +9,7 @@ const Test = () => {
     <div>
       <NavBar />
         <div className="you-would-not-pass">
-          <img src={Image} alt="courtney qui dit non" className="gif-no" />
+          <img src={Image} alt="courtney qui dit non" />
         </div>
       <Footer />
     </div>

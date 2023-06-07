@@ -14,6 +14,7 @@ export const FormLogin = () => {
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   const sendEmail = (formData) => {
     const serviceId = "service_o8p8oku";
@@ -71,35 +72,34 @@ export const FormLogin = () => {
   };
 
   const handleSignupSubmit = async (e) => {
-    // Gestion de la soumission du formulaire d'inscription
     e.preventDefault();
-    const formData = {
-      nom: nom,
-      prenom: prenom,
-      pseudo: pseudo,
-      email: email,
-      password: password,
-      telephone: telephone,
-      confirmationCode: confirmationCode,
-    };
+
+    const formDataPhotoPath = e.target.elements.photoPath.files[0]; // Récupérer le fichier photo à partir du formulaire
+    const formData = new FormData();
+    formData.append('photoPath', formDataPhotoPath); // Ajouter la photo à l'objet FormData
+
+    // Ajouter les autres champs du formulaire à l'objet FormData
+    formData.append("nom", nom);
+    formData.append("prenom", prenom);
+    formData.append("pseudo", pseudo);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("telephone", telephone);
+    formData.append("confirmationCode", confirmationCode);
 
     try {
       const response = await fetch("http://localhost:8000/user", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: formData, // Utiliser l'objet FormData comme corps de la requête
       });
 
       if (response.ok) {
         const responceText = await response.text();
         console.log("Inscription réussie");
-        formData.confirmationCode = responceText;
+        formData.set("confirmationCode", responceText);
         sendEmail(formData);
         console.log(formData);
       } else {
-        // Erreur d'inscription
         const errorMessage = await response.text();
         setError(errorMessage);
       }
@@ -185,6 +185,12 @@ export const FormLogin = () => {
         <div className="login-card">
           <h2>Inscription</h2>
           <form className="login-form" onSubmit={handleSignupSubmit}>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              onChange={(e) => setSelectedPhoto(e.target.files[0])}
+            />
             <div className="name">
               <input
                 value={nom}

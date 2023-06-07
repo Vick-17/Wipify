@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 import "../styles/components/navbar.css";
+import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
   //annimation navbar chargement
   const [showElement, setShowElement] = useState(false);
+  const token = localStorage.getItem("userToken");
+  const decodedToken = jwtDecode(token);
+  const role = decodedToken.roles;
 
   useEffect(() => {
     setTimeout(() => {
@@ -14,9 +18,9 @@ const NavBar = () => {
   }, []);
 
   //annimation navbar scroll
-  var prevScrollpos = window.pageYOffset;
+  let prevScrollpos = window.pageYOffset;
   window.onscroll = function () {
-    var currentScrollPos = window.pageYOffset;
+    let currentScrollPos = window.pageYOffset;
     if (prevScrollpos > currentScrollPos) {
       document.getElementById("navbar").style.top = "0";
     } else {
@@ -66,24 +70,26 @@ const NavBar = () => {
           >
             <li className="nav-list">Login</li>
           </NavLink>
-          <NavLink
-            to="/ajoutarticle"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li className="nav-list">Ajouter un article</li>
-          </NavLink>
-          <NavLink
-            to="/Admin"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li className="nav-list">Admin</li>
-          </NavLink>
-          <NavLink
-            to="/test"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li className="nav-list">test</li>
-          </NavLink>
+          {role[0] === "ROLE_ADMIN" && (
+            <>
+              <NavLink
+                to="/ajoutarticle"
+                className={(nav) => (nav.isActive ? "nav-active" : "")}
+              >
+                <li className="nav-list">Ajouter un article</li>
+              </NavLink>
+            </>
+          )}
+          {role[0] === "ROLE_ADMIN" && (
+            <>
+              <NavLink
+                to="/Admin"
+                className={(nav) => (nav.isActive ? "nav-active" : "")}
+              >
+                <li className="nav-list">Admin</li>
+              </NavLink>
+            </>
+          )}
         </ul>
       </div>
     </>
