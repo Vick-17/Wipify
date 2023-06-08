@@ -74,9 +74,9 @@ export const FormLogin = () => {
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataPhotoPath = e.target.elements.photoPath.files[0]; // Récupérer le fichier photo à partir du formulaire
+    const formDataPhotoPath = e.target.elements.imageFile.files[0]; // Récupérer le fichier photo à partir du formulaire
     const formData = new FormData();
-    formData.append('photoPath', formDataPhotoPath); // Ajouter la photo à l'objet FormData
+    formData.append('imageFile', formDataPhotoPath); // Ajouter la photo à l'objet FormData
 
     // Ajouter les autres champs du formulaire à l'objet FormData
     formData.append("nom", nom);
@@ -187,7 +187,7 @@ export const FormLogin = () => {
           <form className="login-form" onSubmit={handleSignupSubmit}>
             <input
               type="file"
-              name="photo"
+              name="imageFile"
               accept="image/*"
               onChange={(e) => setSelectedPhoto(e.target.files[0])}
             />
