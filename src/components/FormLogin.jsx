@@ -30,10 +30,10 @@ export const FormLogin = () => {
     emailjs
       .send(serviceId, templateId, templateParams, userId)
       .then((response) => {
-        console.log("email Envoyé", response.status, response.text);
+        console.log(response.status, response.text);
       })
       .catch((error) => {
-        console.error("Erreur lors de l'envoi de l'e-mail :", error);
+        setError(error);
       });
   };
 
@@ -60,14 +60,13 @@ export const FormLogin = () => {
         // Connexion réussie
         const token = response.headers.get("access_token");
         localStorage.setItem("userToken", token);
-        console.log("Connexion réussie");
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();
         setError(errorMessage);
       }
     } catch (error) {
-      console.error("Erreur lors de la connexion :", error);
+      setError(error);
     }
   };
 
@@ -95,16 +94,14 @@ export const FormLogin = () => {
 
       if (response.ok) {
         const responceText = await response.text();
-        console.log("Inscription réussie");
         formData.set("confirmationCode", responceText);
         sendEmail(formData);
-        console.log(formData);
       } else {
         const errorMessage = await response.text();
         setError(errorMessage);
       }
     } catch (error) {
-      console.error("Erreur lors de l'inscription :", error);
+      setError(error);
     }
   };
 
@@ -149,7 +146,7 @@ export const FormLogin = () => {
       {showLogin ? (
         <div className="login-card">
           <h2>Connexion</h2>
-          {error && <p>{error}</p>}
+          {error && <p style={{color: 'red'}} >Erreur de connexion</p>}
           <form className="login-form" onSubmit={handleLoginSubmit}>
             <div className="username">
               <input
