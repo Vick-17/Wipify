@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Accueil";
 import Jeux from "./pages/Jeux";
 import Login from "./pages/LogIn";
@@ -18,45 +18,36 @@ const App = () => {
   const role = decodedToken.roles;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Jeux/:id" element={<Article />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/Jeux" element={<Jeux />} />
-        <Route path="/news" element={<Actu />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/video" element={<Video />} />
-        <Route path="/streaming" element={<Streaming />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/ajoutarticle"
-          element={
-            role[0] === "ROLE_ADMIN" ? (
-              <AjoutArticle />
-            ) : (
-              <Navigate to="/test" replace />
-            )
-          }
-        />
-        <Route
-          path="/updateArticle/:id"
-          element={
-            role[0] === "ROLE_ADMIN" ? (
-              <AjoutArticle />
-            ) : (
-              <Navigate to="/test" />
-            )
-          }
-        />
-        <Route
-          path="/Admin"
-          element={
-            role[0] === "ROLE_ADMIN" ? <AdminPage /> : <Navigate to="/test" />
-          }
-        />
-        <Route path="/test" element={<Test />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/Jeux/:id" element={<Article />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/Jeux" element={<Jeux />} />
+      <Route path="/news" element={<Actu />} />
+      <Route path="/test" element={<Test />} />
+      <Route path="/video" element={<Video />} />
+      <Route path="/streaming" element={<Streaming />} />
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/ajoutarticle"
+        element={
+          role[0] === "ROLE_ADMIN" ? (
+            <AjoutArticle />
+          ) : (
+            <Navigate to="/test" replace />
+          )
+        }
+      />
+      <Route
+        path="/updateArticle/:id"
+        element={
+          role[0] === "ROLE_ADMIN" ? <AjoutArticle /> : <Navigate to="/test" />
+        }
+      />
+      <Route path="/Admin" element={
+        role[0] === "ROLE_ADMIN" ? <AdminPage /> : <Navigate to="/test"/>
+      } />
+      <Route path="/test" element={<Test />} />
+    </Routes>
   );
 };
 

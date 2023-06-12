@@ -14,7 +14,7 @@ const Accueil = () => {
       <div className="login-title">
         <Logo />
       </div>
-
+      <NavBar />
       <div className="sidebar-container">
         <Sidebar />
       </div>
