@@ -1,66 +1,68 @@
 import React, { useEffect, useState } from "react";
-import "../styles/page/Jeux.css";
-import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
-import Article from "../components/Articles";
-import Loading from "../components/Loading";
+import Image from "../img/LoadingCox.gif";
+import Fond from "../img/fondPoke.jpg";
+import "../styles/components/Loading.css";
 
-const Jeux = () => {
-  const [videoGames, setVideoGames] = useState([]);
-
-  async function fetchVideoGames() {
-    try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/articles");
-      const data = await response.json();
-
-      //Tri des aticles par ordre décroissant de date
-      const sortedArticle = data.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-      const lastestArticle = sortedArticle.slice(0, 10);
-
-      setVideoGames(lastestArticle);
-    } catch (error) {
-      console.error("Error fetching video games:", error);
-    }
-  }
+const Loading = () => {
+  const [position, setPosition] = useState(0);
 
   useEffect(() => {
-    fetchVideoGames();
+    const handleKeyDown = (event) => {
+      switch (event.key) {
+        case "ArrowUp":
+          handleJump();
+          break;
+        case "ArrowLeft":
+          handleMoveLeft();
+          break;
+        case "ArrowRight":
+          handleMoveRight();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
-  function formatDate(stringDate) {
-    let newDate = new Date(stringDate);
-    return newDate.toLocaleDateString("fr");
-  }
+  const handleJump = () => {
+    // Logique pour faire sauter le personnage
+    setPosition(position - 50);
+  };
+
+  const handleMoveLeft = () => {
+    // Logique pour déplacer le personnage vers la gauche
+    setPosition(position - 10);
+  };
+
+  const handleMoveRight = () => {
+    // Logique pour déplacer le personnage vers la droite
+    setPosition(position + 10);
+  };
+
   return (
-    <div>
-      <NavBar />
-      <div className="sidebar-container">
-        <Sidebar />
+    <>
+      <div className="loading">
+        <img
+          src={Image}
+          alt="courtney qui dit non"
+          className="gif-no"
+          style={{ bottom: position + "px" }}
+        />
+        <div className="diaporama">
+          <img src={Fond} alt="fond ville qui defile" className="fond-ville" />
+          <img src={Fond} alt="fond ville qui defile" className="fond-ville" />
+          <img src={Fond} alt="fond ville qui defile" className="fond-ville" />
+        </div>
+        <p>Chargement...</p>
       </div>
-      <div className="article-body">
-        {videoGames.length === 0 ? (
-          <>
-            <Loading />
-          </>
-        ) : (
-          videoGames.map((game) => {
-            return (
-              <Article
-                key={game.id}
-                id={game.id}
-                title={game.title}
-                date={formatDate(game.date)}
-                content={game.resume}
-                image={game.imageUrl}
-              />
-            );
-          })
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
-export default Jeux;
+export default Loading;
