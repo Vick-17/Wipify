@@ -5,16 +5,18 @@ import "../styles/components/navbar.css";
 import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
+const [roles, setRoles] = useState([]);
   //annimation navbar chargement
-  const [roles, setRoles] = useState([]);
   const [showElement, setShowElement] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setShowElement(true);
     }, 500);
     const token = localStorage.getItem("userToken");
-    const decodedToken = jwtDecode(token);
+    if(token !== null) {
+          const decodedToken = jwtDecode(token);
     setRoles(decodedToken.roles)
+    }
   }, []);
 
   //annimation navbar scroll

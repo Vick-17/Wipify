@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Accueil";
 import Jeux from "./pages/Jeux";
@@ -10,12 +10,17 @@ import Streaming from "./pages/Streaming";
 import AjoutArticle from "./pages/FormArticle";
 import Article from "./pages/Article";
 import AdminPage from "./pages/AdminPage";
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
-const App = () => {
-  const token = localStorage.getItem("userToken");
-  const decodedToken = jwt_decode(token);
-  const role = decodedToken.roles;
+const App = () => {  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (token !== null) {
+      const decodedToken = jwtDecode(token);
+      setRoles(decodedToken.roles);
+    }
+  }, []);
 
   return (
     <Routes>
@@ -30,7 +35,7 @@ const App = () => {
       <Route
         path="/ajoutarticle"
         element={
-          role[0] === "ROLE_ADMIN" ? (
+          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
             <AjoutArticle />
           ) : (
             <Navigate to="/test" replace />
@@ -40,12 +45,23 @@ const App = () => {
       <Route
         path="/updateArticle/:id"
         element={
-          role[0] === "ROLE_ADMIN" ? <AjoutArticle /> : <Navigate to="/test" />
+          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
+            <AjoutArticle />
+          ) : (
+            <Navigate to="/test" />
+          )
         }
       />
-      <Route path="/Admin" element={
-        role[0] === "ROLE_ADMIN" ? <AdminPage /> : <Navigate to="/test"/>
-      } />
+      <Route
+        path="/Admin"
+        element={
+          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
+            <AdminPage />
+          ) : (
+            <Navigate to="/test" />
+          )
+        }
+      />
       <Route path="/test" element={<Test />} />
     </Routes>
   );

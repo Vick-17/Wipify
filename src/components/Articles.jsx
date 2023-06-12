@@ -1,24 +1,35 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/components/Article.css";
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 const Articles = ({ id, title, date, image, content }) => {
-  const token = localStorage.getItem("userToken");
-  const decodedToken = jwt_decode(token);
-  const role = decodedToken.roles;
+  const [roles, setRoles] = useState([]);
+  const token = useRef("");
+  useEffect(() => {
+    token.current = localStorage.getItem("userToken");
+    if (token.current !== null) {
+      const decodedToken = jwtDecode(token.current);
+      setRoles(decodedToken.roles);
+    }
+  }, []);
+
+  
   const handleDelete = async () => {
     try {
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.current}`,
       };
-      const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
-        headers: headers,
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://apispringboot-production.up.railway.app/article/${id}`,
+        {
+          headers: headers,
+          method: "DELETE",
+        }
+      );
 
-      if (response.ok && role[0] === "ROLE_ADMIN") {
+      if (response.ok && roles[0] === "ROLE_ADMIN") {
         console.log("Article supprimé avec succès !");
       } else {
         console.error(
@@ -47,7 +58,7 @@ const Articles = ({ id, title, date, image, content }) => {
           <NavLink to={`/Jeux/${id}`} className="btnGoArticle">
             <button className="goToArticle">En voir plus</button>
           </NavLink>
-          {role[0] === "ROLE_ADMIN" && (
+          {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink to={`/updateArticle/${id}`}>
                 <button>Modifier</button>
