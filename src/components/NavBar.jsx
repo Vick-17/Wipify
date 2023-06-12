@@ -5,7 +5,7 @@ import "../styles/components/navbar.css";
 import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
-const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState([]);
   //annimation navbar chargement
   const [showElement, setShowElement] = useState(false);
   useEffect(() => {
@@ -13,9 +13,9 @@ const [roles, setRoles] = useState([]);
       setShowElement(true);
     }, 500);
     const token = localStorage.getItem("userToken");
-    if(token !== null) {
-          const decodedToken = jwtDecode(token);
-    setRoles(decodedToken.roles)
+    if (token !== null) {
+      const decodedToken = jwtDecode(token);
+      setRoles(decodedToken.roles);
     }
   }, []);
 
@@ -72,6 +72,16 @@ const [roles, setRoles] = useState([]);
           >
             <li className="nav-list">Login</li>
           </NavLink>
+          {roles.length > 0 && roles[0] !== null && (
+            <>
+              <NavLink
+                to="/Deconnexion"
+                className={(nav) => (nav.isActive ? "nav-active" : "")}
+              >
+                <li className="nav-list">Deconnexion</li>
+              </NavLink>
+            </>
+          )}
           {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink
