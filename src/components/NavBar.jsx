@@ -6,15 +6,15 @@ import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
   //annimation navbar chargement
+  const [roles, setRoles] = useState([]);
   const [showElement, setShowElement] = useState(false);
-  const token = localStorage.getItem("userToken");
-  const decodedToken = jwtDecode(token);
-  const role = decodedToken.roles;
-
   useEffect(() => {
     setTimeout(() => {
       setShowElement(true);
     }, 500);
+    const token = localStorage.getItem("userToken");
+    const decodedToken = jwtDecode(token);
+    setRoles(decodedToken.roles)
   }, []);
 
   //annimation navbar scroll
@@ -70,7 +70,7 @@ const NavBar = () => {
           >
             <li className="nav-list">Login</li>
           </NavLink>
-          {role[0] === "ROLE_ADMIN" && (
+          {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink
                 to="/ajoutarticle"
@@ -80,7 +80,7 @@ const NavBar = () => {
               </NavLink>
             </>
           )}
-          {role[0] === "ROLE_ADMIN" && (
+          {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink
                 to="/Admin"
