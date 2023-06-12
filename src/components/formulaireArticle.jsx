@@ -46,7 +46,7 @@ const FormulaireArticle = () => {
     };
     console.log(formData);
     try{
-      const responce = await fetch(`http://localhost:8000/article/${id}`, {
+      const responce = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
         method: "PUT",
         headers:{
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const FormulaireArticle = () => {
 
     // Envoi des données du formulaire à l'API.
     try {
-      const response = await fetch("http://localhost:8000/article", {
+      const response = await fetch("https://apispringboot-production.up.railway.app/article", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const FormulaireArticle = () => {
       setIsEditMode(true);
     const fetchArticle = async () => {
       try {
-        const responce = await fetch(`http://localhost:8000/article/${id}`);
+        const responce = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`);
         const data = await responce.json();
         
         setArticle(data);

@@ -10,7 +10,7 @@ const Jeux = () => {
 
   async function fetchVideoGames() {
     try {
-      const response = await fetch("http://localhost:8000/articles");
+      const response = await fetch("https://apispringboot-production.up.railway.app/articles");
       const data = await response.json();
 
       //Tri des aticles par ordre décroissant de date

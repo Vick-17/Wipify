@@ -13,7 +13,7 @@ const Articles = ({ id, title, date, image, content }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch(`http://localhost:8000/article/${id}`, {
+      const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
         headers: headers,
         method: "DELETE",
       });

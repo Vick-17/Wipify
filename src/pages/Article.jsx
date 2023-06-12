@@ -24,7 +24,7 @@ const Article = () => {
         };
   
         if (role[0] === "[ROLE_ADMIN]") {
-          const response = await fetch(`http://localhost:8000/article/${id}`, {
+          const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
             headers: headers,
           });
           const data = await response.json();
