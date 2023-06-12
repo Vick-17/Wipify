@@ -10,36 +10,20 @@ const Article = () => {
   const [article, setArticle] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const token = localStorage.getItem("userToken");
-  const decodedToken = jwt_decode(token);
-  const role = decodedToken.roles;
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const token = localStorage.getItem("userToken");
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-  
-        if (role[0] === "[ROLE_ADMIN]") {
-          const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
-            headers: headers,
-          });
+          const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`);
           const data = await response.json();
           setArticle(data);
-        } else {
-          navigate("/");
-          console.error("Accès non autorisé");
-        }
       } catch (error) {
         console.error("Error fetching article:", error);
       }
     };
   
     fetchArticle();
-  }, [id, role, navigate]);
+  }, [id, navigate]);
   
 
 
