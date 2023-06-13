@@ -1,104 +1,47 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
+import YouTube from "react-youtube";
 import "../styles/components/NewVideo.css";
 
 const NewVideo = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const videoUrl = "https://www.youtube.com/watch?v=mxpYHW-M_Ac";
+  const videoId = extractVideoId(videoUrl);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPos = window.pageYOffset;
-      const isScrollingDown = currentScrollPos > prevScrollPos;
-      const triggerPosition = window.innerHeight / 5;
+  function extractVideoId(url) {
+    const videoIdRegex = /[?&]v=([^&]+)/;
+    const match = url.match(videoIdRegex);
+    return match ? match[1] : null;
+  }
 
-      if (currentScrollPos > triggerPosition && isScrollingDown) {
-        setIsVisible(true);
-      } else if (currentScrollPos < prevScrollPos) {
-      } else {
-        setIsVisible(false);
-      }
-
-      setPrevScrollPos(currentScrollPos);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollPos]);
+  const opts = {
+    height: "390",
+    width: "100%",
+    playerVars: {
+      autoplay: 0,
+    },
+  };
   return (
     <div className="video-container">
       <div className="title-dance">
         <h5>Vidéos présentées</h5>
       </div>
       <div className="newVideo">
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            width="559"
-            height="314"
-            src="https://www.youtube.com/embed/7wwglDzRTZY"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            width="559"
-            height="314"
-            src="https://www.youtube.com/embed/Dv-7K_m589I"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            width="559"
-            height="314"
-            src="https://www.youtube.com/embed/Dv-7K_m589I"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            width="559"
-            height="314"
-            src="https://www.youtube.com/embed/Dv-7K_m589I"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            width="559"
-            height="314"
-            src="https://www.youtube.com/embed/Dv-7K_m589I"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
-        <div className={`video ${isVisible ? "visible" : ""}`}>
-          <iframe
-          className="youtube"
-            src="https://www.youtube.com/embed/Dv-7K_m589I"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div className="video">
+          <YouTube videoId={videoId} opts={opts} />
         </div>
       </div>
     </div>

@@ -15,12 +15,9 @@
   justify-content: space-around;
 }
 .video {
-  padding: 1%;
-  opacity: 0;
-}
-.video.visible {
-  opacity: 1;
-  transition: 1s;
+  width: 35rem;
+  max-width: 100%;
+  margin: 1%;
 }
 .title-dance > h5 {
   animation: dance 1s ease infinite;
@@ -28,11 +25,6 @@
   font-size: xx-large;
   font-weight: bold;
   margin-bottom: 5%;
-}
-.youtube {
-  width: 559px;
-  height: 314px;
-  padding: 2%;
 }
 @media screen and (max-width: 1000px) {
   .title-dance > h5 {

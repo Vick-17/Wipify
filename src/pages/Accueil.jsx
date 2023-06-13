@@ -5,6 +5,7 @@ import NewVideo from "../components/NewVideo";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Logo from "../components/Logo";
+import ArticleAlaUne from "../components/ArticleUne"
 import CarrouselArticles from "../components/Carrousel";
 import "../styles/page/accueil.css"
 
@@ -27,6 +28,9 @@ const Accueil = () => {
         </div>
         <div className="twicth">
           <LiveTwitch />
+        </div>
+        <div className="article-a-la-une">
+          <ArticleAlaUne />
         </div>
         <div className="new-video">
           <NewVideo />

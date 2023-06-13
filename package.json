@@ -19,6 +19,7 @@
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
     "react-twitch-embed": "^3.0.1",
+    "react-youtube": "^10.1.0",
     "sass": "^1.61.0",
     "setimmediate": "^1.0.5",
     "slick-carousel": "^1.8.1",
