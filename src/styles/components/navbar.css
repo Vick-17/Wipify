@@ -1,7 +1,7 @@
+
 #navbar {
   position: fixed;
   top: 0;
-  display: block;
   transition: top 0.5s;
   width: 100%;
   display: flex;
@@ -13,9 +13,11 @@
   background-color: #1e1e2436;
   padding: 2%;
   backdrop-filter: blur(5px);
+  align-items: center;
 }
 
 .navbar > ul {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
   list-style: none;
@@ -48,6 +50,20 @@
 .nav-active {
   color: white;
   text-decoration: none;
+}
+.logout-login{
+  margin: 10px;
+  color: white;
+  font-family: Inter, sans-serif;
+  font-size: 0.95rem;
+  background-color: #e13c33;
+  padding: 0.6rem;
+  border-radius: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+.logout-login:hover{
+  background-color: #e13c33a2;
 }
 
 @media only screen and (max-width: 1000px) {

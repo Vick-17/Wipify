@@ -5,17 +5,18 @@ import "../styles/components/navbar.css";
 import jwtDecode from "jwt-decode";
 
 const NavBar = () => {
-const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const token = localStorage.getItem("userToken");
   //annimation navbar chargement
   const [showElement, setShowElement] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setShowElement(true);
     }, 500);
-    const token = localStorage.getItem("userToken");
-    if(token !== null) {
-          const decodedToken = jwtDecode(token);
-    setRoles(decodedToken.roles)
+    const tokenRole = localStorage.getItem("userToken");
+    if (tokenRole !== null) {
+      const decodedToken = jwtDecode(tokenRole);
+      setRoles(decodedToken.roles);
     }
   }, []);
 
@@ -29,6 +30,14 @@ const [roles, setRoles] = useState([]);
       document.getElementById("navbar").style.top = "-100%";
     }
     prevScrollpos = currentScrollPos;
+  };
+
+  const handleLogout = () => {
+    // Supprimer le token du local storage
+    localStorage.removeItem("userToken");
+
+    // Rediriger l'utilisateur vers la page de connexion
+    window.location.href = "/";
   };
 
   return (
@@ -66,12 +75,6 @@ const [roles, setRoles] = useState([]);
           >
             <li className="nav-list">Streaming</li>
           </NavLink>
-          <NavLink
-            to="/login"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li className="nav-list">Login</li>
-          </NavLink>
           {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink
@@ -89,6 +92,28 @@ const [roles, setRoles] = useState([]);
                 className={(nav) => (nav.isActive ? "nav-active" : "")}
               >
                 <li className="nav-list">Admin</li>
+              </NavLink>
+            </>
+          )}
+          {token === null && (
+            <NavLink
+              to="/login"
+              className={(nav) => (nav.isActive ? "nav-active" : "")}
+            >
+              <li className="logout-login">Connexion</li>
+            </NavLink>
+          )}
+          {token !== null && (
+            <>
+              <NavLink
+                to="/Deconnexion"
+                className={(nav) => (nav.isActive ? "nav-active" : "")}
+              >
+                <li>
+                  <button className="logout-login" onClick={handleLogout}>
+                    Deconnexion
+                  </button>
+                </li>
               </NavLink>
             </>
           )}
