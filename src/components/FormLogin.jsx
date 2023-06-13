@@ -13,7 +13,7 @@ export const FormLogin = () => {
   const [pseudo, setPseudo] = useState("");
   const [telephone, setNumero] = useState("");
   const [error, setError] = useState("");
-  const [confirmationCode, setConfirmationCode] = useState("");
+  const [confirmationCode] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   const sendEmail = (formData) => {
@@ -60,7 +60,7 @@ export const FormLogin = () => {
         // Connexion réussie
         const token = response.headers.get("access_token");
         localStorage.setItem("userToken", token);
-        console.log("Connexion réussie");
+        window.location.href = '/';
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();
