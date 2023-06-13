@@ -1,3 +1,4 @@
+import React from "react";
 import NavBar from "../components/NavBar";
 import LiveTwitch from "../components/LiveTwitch";
 import BannerTitle from "../components/BannerTitle";
@@ -5,9 +6,9 @@ import NewVideo from "../components/NewVideo";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import Logo from "../components/Logo";
-import ArticleAlaUne from "../components/ArticleUne"
+import ArticleAlaUne from "../components/ArticleAccueil";
 import CarrouselArticles from "../components/Carrousel";
-import "../styles/page/accueil.css"
+import "../styles/page/accueil.css";
 
 const Accueil = () => {
   return (
@@ -28,6 +29,9 @@ const Accueil = () => {
         </div>
         <div className="twicth">
           <LiveTwitch />
+        </div>
+        <div className="titre-bloc-article">
+          <h5>Article à la une</h5>
         </div>
         <div className="article-a-la-une">
           <ArticleAlaUne />

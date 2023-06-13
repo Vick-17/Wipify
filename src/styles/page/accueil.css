@@ -1,3 +1,15 @@
 .container{
     margin-top: 7vw;
 }
+.article-a-la-une{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.titre-bloc-article{
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    color: white;
+    font-size: 2.5rem;
+}

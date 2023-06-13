@@ -3,13 +3,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "../styles/components/FormulaireArticle.css";
 import { useParams, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
-// Déclaration du composant FormulaireArticle.
 const FormulaireArticle = () => {
-  // Utilisation de useRef pour accéder au contenu de l'éditeur de texte.
   const editorRef = useRef(null);
-
-  // Fonction pour logger le contenu de l'éditeur.
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
@@ -23,9 +20,19 @@ const FormulaireArticle = () => {
   const [editorContent, setEditorContent] = useState("");
   const [wordCount, setWordCount] = useState(0);
   const [article, setArticle] = useState(null);
-  const {id} = useParams();
+  const { id } = useParams();
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
+  const [roles, setRoles] = useState([]);
+  const token = useRef("");
+
+  useEffect(() => {
+    token.current = localStorage.getItem("userToken");
+    if (token.current !== null) {
+      const decodedToken = jwtDecode(token.current);
+      setRoles(decodedToken.roles);
+    }
+  }, []);
 
   // Gestionnaire d'événements pour changer le résumé et le nombre de mots.
   const handleResumeChange = (e) => {
@@ -33,9 +40,12 @@ const FormulaireArticle = () => {
     setResume(value);
     setWordCount(value.trim().length);
   };
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token.current}`,
+  };
 
   const handleEdit = async (e) => {
-    console.log("coucou")
     e.preventDefault();
     const formData = {
       id: id,
@@ -44,17 +54,17 @@ const FormulaireArticle = () => {
       resume: resume,
       imageUrl: imageUrl,
     };
-    console.log(formData);
-    try{
-      const responce = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`, {
-        method: "PUT",
-        headers:{
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    try {
+      const responce = await fetch(
+        `https://apispringboot-production.up.railway.app/article/${id}`,
+        {
+          method: "PUT",
+          headers: headers,
+          body: JSON.stringify(formData),
+        }
+      );
 
-      if (responce.ok) {
+      if (responce.ok && roles[0] === "ROLE_ADMIN") {
         console.log("Données mises à jour avec succès !");
         navigate(`/Jeux/${id}`);
       } else {
@@ -70,7 +80,6 @@ const FormulaireArticle = () => {
 
   // Fonction pour gérer la soumission du formulaire.
   const handleSubmit = async (e) => {
-    console.log("coucou 2")
     e.preventDefault();
     const formData = {
       title: titre,
@@ -82,15 +91,16 @@ const FormulaireArticle = () => {
 
     // Envoi des données du formulaire à l'API.
     try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://apispringboot-production.up.railway.app/article",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(formData),
+        }
+      );
 
-      if (response.ok) {
+      if (response.ok && roles[0] === "ROLE_ADMIN") {
         console.log("Données envoyées avec succès !");
         // Réinitialisation des champs du formulaire après soumission réussie.
         setTitre("");
@@ -109,27 +119,28 @@ const FormulaireArticle = () => {
   };
 
   useEffect(() => {
-
-    if(id !== undefined){
+    if (id !== undefined) {
       setIsEditMode(true);
-    const fetchArticle = async () => {
-      try {
-        const responce = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`);
-        const data = await responce.json();
-        
-        setArticle(data);
-        setTitre(data.title);
-        setResume(data.resume);
-        setImageUrl(data.imageUrl);
-        setEditorContent(data.content);
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des détails de l'article :",
-          error
-        );
-      }
-    };
-    fetchArticle();
+      const fetchArticle = async () => {
+        try {
+          const responce = await fetch(
+            `https://apispringboot-production.up.railway.app/article/${id}`
+          );
+          const data = await responce.json();
+
+          setArticle(data);
+          setTitre(data.title);
+          setResume(data.resume);
+          setImageUrl(data.imageUrl);
+          setEditorContent(data.content);
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération des détails de l'article :",
+            error
+          );
+        }
+      };
+      fetchArticle();
     }
   }, [id]);
 
@@ -153,7 +164,7 @@ const FormulaireArticle = () => {
     <div>
       <div className="formulaire-container">
         <h1>Ajout d'article</h1>
-        <form onSubmit={ isEditMode ? handleEdit : handleSubmit}>
+        <form onSubmit={isEditMode ? handleEdit : handleSubmit}>
           <label htmlFor="titre">Titre :</label>
           <input
             type="text"
@@ -236,7 +247,11 @@ const FormulaireArticle = () => {
           />
 
           <div className="button-container">
-            <input type="submit" value={isEditMode ? "Modifier" : "Ajouter"} disabled={!isResumeValid} />
+            <input
+              type="submit"
+              value={isEditMode ? "Modifier" : "Ajouter"}
+              disabled={!isResumeValid}
+            />
           </div>
         </form>
       </div>

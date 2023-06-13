@@ -1,58 +1,27 @@
-import React, { useEffect, useState } from "react";
-import ArticleAccueil from "./Articles";
-import Loading from "../components/Loading";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "../styles/components/ArticleUne.css";
 
-const ArticleUne = () => {
-  const [articles, setArticle] = useState([]);
-
-  async function fetchArticle() {
-    try {
-      const responce = await fetch(
-        "https://apispringboot-production.up.railway.app/articles"
-      );
-      const data = await responce.json();
-
-      const sortedArticle = data.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-      const lastestArticle = sortedArticle.slice(0, 10);
-
-      setArticle(lastestArticle);
-    } catch (error) {
-      console.error("Error fetching video games:", error);
-    }
-  }
-
-  useEffect(() => {
-    fetchArticle();
-  }, []);
-
-  function formatDate(stringDate) {
-    let newDate = new Date(stringDate);
-    return newDate.toLocaleDateString("fr");
-  }
+const ArticleUne = ({ id, title, date, image, content }) => {
   return (
-    <>
-      {articles.length === 0 ? (
-        <>
-          <Loading />
-        </>
-      ) : (
-        articles.map((article) => {
-          return (
-            <div className="newsArticle" key={article.id}>
-              <ArticleAccueil
-                id={article.id}
-                title={article.title}
-                date={formatDate(article.date)}
-                content={article.resume}
-                image={article.imageUrl}
-              />
-            </div>
-          );
-        })
-      )}
-    </>
+    <div className="content-articles">
+      <div className="article-img">
+        <img src={image} alt="img-title" className="image-content" />
+      </div>
+      <div className="content-article">
+        <div className="date-publie">{date}</div>
+        <div className="article-name">
+          <h5>{title}</h5>
+        </div>
+        <br />
+        <div className="description">{content}</div>
+        <div className="btn-une">
+          <NavLink to={`/Jeux/${id}`} className="toArticle">
+            <button className="goArticle">En voir plus</button>
+          </NavLink>
+        </div>
+      </div>
+    </div>
   );
 };
 

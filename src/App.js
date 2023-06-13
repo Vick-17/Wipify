@@ -12,7 +12,8 @@ import Article from "./pages/Article";
 import AdminPage from "./pages/AdminPage";
 import jwtDecode from "jwt-decode";
 
-const App = () => {  const [roles, setRoles] = useState([]);
+const App = () => {
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");

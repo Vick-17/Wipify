@@ -1,0 +1,41 @@
+.content-articles{
+    width: 50rem;
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.article-img{
+    text-align: center;
+    width: 50%;
+    margin: 0.5rem;
+    overflow: hidden;
+}
+.image-content{
+    width: 400px;
+}
+
+.article-name > h5{
+    font-size: 1.2rem;
+}
+.content-article{
+    width: 50%;
+}
+
+.btn-une{
+    display: flex;
+    justify-content: end;
+    text-align: right;
+    width: 100%;
+    margin-top: 5%;
+}
+.goArticle{
+    color: white;
+    font-family: Inter, sans-serif;
+    background-color: #e13c33;
+    padding: 1rem;
+    border-radius: 50px;
+}
+
