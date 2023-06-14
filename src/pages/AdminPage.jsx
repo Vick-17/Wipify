@@ -1,21 +1,17 @@
 import React from "react";
 import Navbar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
+import AdminSidebar from "../components/AdminSidebar";
+import Dashboard from "../components/Dashboard";
 import "../styles/page/AdminPage.css";
 
 const AdminPage = () => {
-
-
   return (
     <>
-    <Navbar />
-    <div className="sidebar-container">
-        <Sidebar />
-    </div>
-    <div className="admin-page">
-      <div className="admin-sidebar"></div>
-      <div className="admin-body"></div>
-    </div>
+      <Navbar />
+      <div className="admin-container">
+        <AdminSidebar />
+        <Dashboard />
+      </div>
     </>
   );
 };

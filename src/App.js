@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import Home from "./pages/Accueil";
 import Jeux from "./pages/Jeux";
 import Login from "./pages/LogIn";
@@ -22,7 +22,6 @@ const App = () => {
       setRoles(decodedToken.roles);
     }
   }, []);
-
   return (
     <Routes>
       <Route path="/Jeux/:id" element={<Article />} />
@@ -33,39 +32,22 @@ const App = () => {
       <Route path="/video" element={<Video />} />
       <Route path="/streaming" element={<Streaming />} />
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/ajoutarticle"
-        element={
-          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
-            <AjoutArticle />
-          ) : (
-            <Navigate to="/test" replace />
-          )
-        }
-      />
-      <Route
-        path="/updateArticle/:id"
-        element={
-          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
-            <AjoutArticle />
-          ) : (
-            <Navigate to="/test" />
-          )
-        }
-      />
-      <Route
-        path="/Admin"
-        element={
-          roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
-            <AdminPage />
-          ) : (
-            <Navigate to="/test" />
-          )
-        }
-      />
-      <Route path="/test" element={<Test />} />
+      {roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
+        <Route path="/ajoutarticle" element={<AjoutArticle />} />
+      ) : (
+        <Route path="/test" element={<Test />} />
+      )}
+      {roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
+        <Route path="/updateArticle/:id" element={<AjoutArticle />} />
+      ) : (
+        <Route path="/test" element={<Test />} />
+      )}
+      {roles.length > 0 && roles[0] === "ROLE_ADMIN" ? (
+        <Route path="/Admin" element={<AdminPage />} />
+      ) : (
+        <Route path="/test" element={<Test />} />
+      )}
     </Routes>
   );
 };
-
 export default App;

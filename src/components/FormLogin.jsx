@@ -61,6 +61,7 @@ export const FormLogin = () => {
         const token = response.headers.get("access_token");
         localStorage.setItem("userToken", token);
         window.location.href = '/';
+        console.log(token)
       } else {
         // Erreur de connexion
         const errorMessage = await response.text();

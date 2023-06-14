@@ -31,6 +31,7 @@ const FormulaireArticle = () => {
     if (token.current !== null) {
       const decodedToken = jwtDecode(token.current);
       setRoles(decodedToken.roles);
+      console.log(decodedToken);
     }
   }, []);
 
@@ -54,8 +55,9 @@ const FormulaireArticle = () => {
       resume: resume,
       imageUrl: imageUrl,
     };
+  
     try {
-      const responce = await fetch(
+      const response = await fetch(
         `https://apispringboot-production.up.railway.app/article/${id}`,
         {
           method: "PUT",
@@ -63,20 +65,21 @@ const FormulaireArticle = () => {
           body: JSON.stringify(formData),
         }
       );
-
-      if (responce.ok && roles[0] === "ROLE_ADMIN") {
+  
+      if (response.ok && roles.includes("ROLE_ADMIN")) {
         console.log("Données mises à jour avec succès !");
         navigate(`/Jeux/${id}`);
       } else {
         console.error(
           "Erreur lors de la mise à jour des données :",
-          responce.statusText
+          response.statusText
         );
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour des données :", error);
     }
   };
+  
 
   // Fonction pour gérer la soumission du formulaire.
   const handleSubmit = async (e) => {

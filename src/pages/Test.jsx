@@ -5,6 +5,7 @@ import Image from "../img/GifCourtNo.gif";
 import "../styles/page/test.css";
 
 const Test = () => {
+
   return (
     <div>
       <NavBar />
