@@ -7,6 +7,16 @@ const Dashboard = () => {
   const [roles, setRoles] = useState([]);
   const token = useRef("");
   const [videoGames, setVideoGames] = useState([]);
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    token.current = localStorage.getItem("userToken");
+    if (token.current !== null) {
+      const decodedToken = jwtDecode(token.current);
+      setRoles(decodedToken.roles);
+    }
+    fetchVideoGames();
+  }, []);
 
   async function fetchVideoGames() {
     try {
@@ -26,15 +36,6 @@ const Dashboard = () => {
       console.error("Error fetching video games:", error);
     }
   }
-
-  useEffect(() => {
-    token.current = localStorage.getItem("userToken");
-    if (token.current !== null) {
-      const decodedToken = jwtDecode(token.current);
-      setRoles(decodedToken.roles);
-    }
-    fetchVideoGames();
-  }, []);
 
   function formatDate(stringDate) {
     let newDate = new Date(stringDate);
@@ -70,6 +71,36 @@ const Dashboard = () => {
     }
   };
 
+  const handleAddUrl = async (e) => {
+    e.preventDefault();
+    const formData = {
+        url: url
+    };
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.current}`,
+      };
+      const response = await fetch(
+        "https://apispringboot-production.up.railway.app/youtubeVideo",
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok && roles[0] === "ROLE_ADMIN") {
+        console.log("URL ajoutée avec succès !");
+        // Réinitialisez le champ d'entrée après l'ajout réussi.
+        setUrl("");
+      } else {
+        console.error("Erreur lors de l'ajout de l'URL :", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de l'URL :", error);
+    }
+  };
   return (
     <div className="dashboard">
       <div className="block block1">
@@ -160,7 +191,18 @@ const Dashboard = () => {
           </NavLink>
         </div>
       </div>
-      <div className="block block2">Bloc 2</div>
+      <div className="block block2">
+        <h5>Ajouter une video youtube</h5>
+        <div className="input-container">
+          <input
+            type="text"
+            placeholder="Entrez une URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <button onClick={handleAddUrl}>Ajouter</button>
+        </div>
+      </div>
       <div className="block block3">Bloc 3</div>
       <div className="block block4">Bloc 4</div>
       <div className="block block5">Bloc 5</div>
