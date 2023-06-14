@@ -59,10 +59,11 @@ const CarrouselArticles = () => {
   };
 
   return (
-    <Slider className={`slider ${showElement ? "show" : ""}`} {...settings}>
+    <Slider {...settings}>
       {videoGames.map((videoGame) => (
         <BlocLastArticle
           key={videoGame.id}
+          id={videoGame.id}
           title={videoGame.title}
           date={formatDate(videoGame.date)}
           content={videoGame.resume}

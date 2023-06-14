@@ -8,7 +8,7 @@ const ButtonArticle = ({ articleId }) => {
   };
 
   return (
-    <NavLink to={`/Article/${articleId}`} className="btnGoArticle">
+    <NavLink to={`/Jeux/${articleId}`} className="btnGoArticle">
       <button className="goToArticle" onClick={handleClick}>
         En voir plus
       </button>
