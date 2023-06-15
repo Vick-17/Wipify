@@ -1,16 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import YouTube from "react-youtube";
 import "../styles/components/NewVideo.css";
 
 const NewVideo = () => {
-  const videoUrl = "https://www.youtube.com/watch?v=mxpYHW-M_Ac";
-  const videoId = extractVideoId(videoUrl);
+  const [videoUrls, setVideoUrl] = useState([]);
 
-  function extractVideoId(url) {
+  async function fetchVideoUrl() {
+    try {
+      const response = await fetch(
+        "https://apispringboot-production.up.railway.app/youtubeVideo"
+      );
+      const data = await response.json();
+
+      // Tri des articles par ordre décroissant de date
+      const sortedArticle = data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      const latestArticle = sortedArticle.slice(0, 10);
+      const videoIds = latestArticle.map((video) => extractVideoId(video.url));
+
+      setVideoUrl(videoIds);
+    } catch (error) {
+      console.error("Error fetching video games:", error);
+    }
+  }
+
+  const extractVideoId = (url) => {
     const videoIdRegex = /[?&]v=([^&]+)/;
     const match = url.match(videoIdRegex);
     return match ? match[1] : null;
-  }
+  };
 
   const opts = {
     height: "390",
@@ -19,29 +38,22 @@ const NewVideo = () => {
       autoplay: 0,
     },
   };
+
+  useEffect(() => {
+    fetchVideoUrl();
+  }, []);
   return (
     <div className="video-container">
       <div className="title-dance">
         <h5>Vidéos présentées</h5>
       </div>
       <div className="newVideo">
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
-        </div>
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
-        </div>
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
-        </div>
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
-        </div>
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
-        </div>
-        <div className="video">
-          <YouTube videoId={videoId} opts={opts} />
+        <div className="newVideo">
+          {videoUrls.map((videoId) => (
+            <div className="video" key={videoId}>
+              <YouTube videoId={videoId} opts={opts} />
+            </div>
+          ))}
         </div>
       </div>
     </div>

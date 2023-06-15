@@ -14,7 +14,7 @@ const Article = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-          const response = await fetch(`https://apispringboot-production.up.railway.app/article/${id}`);
+          const response = await fetch(`https://apispringboot-production.up.railway.app/articles/${id}`);
           const data = await response.json();
           setArticle(data);
       } catch (error) {

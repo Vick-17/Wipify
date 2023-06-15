@@ -48,7 +48,7 @@ const Dashboard = () => {
         Authorization: `Bearer ${token.current}`,
       };
       const response = await fetch(
-        `https://apispringboot-production.up.railway.app/article/${id}`,
+        `https://apispringboot-production.up.railway.app/articles/${id}`,
         {
           headers: headers,
           method: "DELETE",
@@ -82,7 +82,7 @@ const Dashboard = () => {
         Authorization: `Bearer ${token.current}`,
       };
       const response = await fetch(
-        "https://apispringboot-production.up.railway.app/youtubeVideo",
+        "https://apispringboot-production.up.railway.app/youtubevideo",
         {
           method: "POST",
           headers: headers,

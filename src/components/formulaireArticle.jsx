@@ -55,17 +55,17 @@ const FormulaireArticle = () => {
       resume: resume,
       imageUrl: imageUrl,
     };
-  
+
     try {
       const response = await fetch(
-        `https://apispringboot-production.up.railway.app/article/${id}`,
+        `https://apispringboot-production.up.railway.app/articles/${id}`,
         {
           method: "PUT",
           headers: headers,
           body: JSON.stringify(formData),
         }
       );
-  
+
       if (response.ok && roles.includes("ROLE_ADMIN")) {
         console.log("Données mises à jour avec succès !");
         navigate(`/Jeux/${id}`);
@@ -79,7 +79,7 @@ const FormulaireArticle = () => {
       console.error("Erreur lors de la mise à jour des données :", error);
     }
   };
-  
+
 
   // Fonction pour gérer la soumission du formulaire.
   const handleSubmit = async (e) => {
@@ -95,7 +95,7 @@ const FormulaireArticle = () => {
     // Envoi des données du formulaire à l'API.
     try {
       const response = await fetch(
-        "https://apispringboot-production.up.railway.app/article",
+        "https://apispringboot-production.up.railway.app/articles",
         {
           method: "POST",
           headers: headers,
@@ -127,7 +127,7 @@ const FormulaireArticle = () => {
       const fetchArticle = async () => {
         try {
           const responce = await fetch(
-            `https://apispringboot-production.up.railway.app/article/${id}`
+            `https://apispringboot-production.up.railway.app/articles/${id}`
           );
           const data = await responce.json();
 
@@ -222,7 +222,6 @@ const FormulaireArticle = () => {
             />
             <button onClick={log}>Log editor content</button>
           </div>
-
           <label htmlFor="resume">Résumé (max 150 caractères) :</label>
           <div className="resume-container">
             <textarea
