@@ -6,8 +6,9 @@ import "../styles/components/Dashbord.css";
 const Dashboard = () => {
   const [roles, setRoles] = useState([]);
   const token = useRef("");
+  const url = useRef("");
   const [videoGames, setVideoGames] = useState([]);
-  const [url, setUrl] = useState("");
+  const [videoName, setVideoName] = useState([]);
 
   useEffect(() => {
     token.current = localStorage.getItem("userToken");
@@ -16,6 +17,7 @@ const Dashboard = () => {
       setRoles(decodedToken.roles);
     }
     fetchVideoGames();
+    fetchVideoUrl();
   }, []);
 
   async function fetchVideoGames() {
@@ -32,6 +34,24 @@ const Dashboard = () => {
       const latestArticles = sortedArticles.slice(0, 10);
 
       setVideoGames(latestArticles);
+    } catch (error) {
+      console.error("Error fetching video games:", error);
+    }
+  }
+  async function fetchVideoUrl() {
+    try {
+      const response = await fetch(
+        "https://apispringboot-production.up.railway.app/youtubeVideo"
+      );
+      const data = await response.json();
+
+      // Tri des articles par ordre décroissant de date
+      const sortedVideo = data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      const latestVideo = sortedVideo.slice(0, 10);
+
+      setVideoName(latestVideo[0]);
     } catch (error) {
       console.error("Error fetching video games:", error);
     }
@@ -71,29 +91,28 @@ const Dashboard = () => {
     }
   };
 
-  const handleAddUrl = async (e) => {
-    e.preventDefault();
-    const formData = {
-        url: url
-    };
+  const handleAddUrl = async () => {
+    const urlString = url.current.value;
     try {
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.current}`,
       };
+      const body = JSON.stringify({
+        name: videoName,
+        url: urlString, // Utilise la date actuelle
+      });
       const response = await fetch(
         "https://apispringboot-production.up.railway.app/youtubevideo",
         {
           method: "POST",
           headers: headers,
-          body: JSON.stringify(formData),
+          body: body,
         }
       );
 
       if (response.ok && roles[0] === "ROLE_ADMIN") {
-        console.log("URL ajoutée avec succès !");
-        // Réinitialisez le champ d'entrée après l'ajout réussi.
-        setUrl("");
+        setVideoName("");
       } else {
         console.error("Erreur lors de l'ajout de l'URL :", response.statusText);
       }
@@ -101,6 +120,7 @@ const Dashboard = () => {
       console.error("Erreur lors de l'ajout de l'URL :", error);
     }
   };
+
   return (
     <div className="dashboard">
       <div className="block block1">
@@ -194,13 +214,34 @@ const Dashboard = () => {
       <div className="block block2">
         <h5>Ajouter une video youtube</h5>
         <div className="input-container">
+          <input type="text" placeholder="Entrez une URL" ref={url} />
           <input
             type="text"
-            placeholder="Entrez une URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Entrez un nom"
+            value={videoName}
+            onChange={(e) => setVideoName(e.target.value)}
           />
           <button onClick={handleAddUrl}>Ajouter</button>
+        </div>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom de l'article</th>
+                <th>Date de publication</th>
+              </tr>
+            </thead>
+            <tbody>
+              {videoName.map((video) => (
+                <tr key={video.id}>
+                  <td>{video.id}</td>
+                  <td>{video.name}</td>
+                  <td>{formatDate(video.date)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
       <div className="block block3">Bloc 3</div>

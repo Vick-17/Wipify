@@ -5,25 +5,7 @@ import "../styles/components/NewVideo.css";
 const NewVideo = () => {
   const [videoUrls, setVideoUrl] = useState([]);
 
-  async function fetchVideoUrl() {
-    try {
-      const response = await fetch(
-        "https://apispringboot-production.up.railway.app/youtubeVideo"
-      );
-      const data = await response.json();
-
-      // Tri des articles par ordre décroissant de date
-      const sortedArticle = data.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-      const latestArticle = sortedArticle.slice(0, 10);
-      const videoIds = latestArticle.map((video) => extractVideoId(video.url));
-
-      setVideoUrl(videoIds);
-    } catch (error) {
-      console.error("Error fetching video games:", error);
-    }
-  }
+  
 
   const extractVideoId = (url) => {
     const videoIdRegex = /[?&]v=([^&]+)/;
@@ -40,6 +22,25 @@ const NewVideo = () => {
   };
 
   useEffect(() => {
+    async function fetchVideoUrl() {
+      try {
+        const response = await fetch(
+          "https://apispringboot-production.up.railway.app/youtubeVideo"
+        );
+        const data = await response.json();
+  
+        // Tri des articles par ordre décroissant de date
+        const sortedArticle = data.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        const latestArticle = sortedArticle.slice(0, 10);
+        const videoIds = latestArticle.map((video) => extractVideoId(video.url));
+  
+        setVideoUrl(videoIds);
+      } catch (error) {
+        console.error("Error fetching video games:", error);
+      }
+    }
     fetchVideoUrl();
   }, []);
   return (
