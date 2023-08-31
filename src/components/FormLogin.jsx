@@ -171,7 +171,7 @@ export const FormLogin = () => {
               type="password"
               placeholder="Mot de passe"
             />
-            <button className="control" type="submit">
+            <button id="button-formlogin" className="control" type="submit">
               SE CONNECTER
             </button>
             <button onClick={toggleFormHide}>
