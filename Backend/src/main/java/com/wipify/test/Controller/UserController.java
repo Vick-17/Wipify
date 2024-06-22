@@ -3,10 +3,8 @@ package com.wipify.test.Controller;
 import com.wipify.test.model.Article;
 import com.wipify.test.model.RoleEntity;
 import com.wipify.test.model.UserEntity;
-import com.wipify.test.model.UserRoleEntity;
 import com.wipify.test.repository.RoleJpaRepository;
 import com.wipify.test.repository.UserRepository;
-import com.wipify.test.repository.UserRoleRepository;
 import com.wipify.test.services.filestorage.FileStorageService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -41,9 +39,6 @@ public class UserController {
 
     @Autowired
     private RoleJpaRepository roleRepository;
-
-    @Autowired
-    private UserRoleRepository userRoleRepository;
 
     @Value("${serveur.url}")
     private String url;
@@ -104,15 +99,11 @@ public class UserController {
         UserEntity savedUser = userRepository.save(userEntity);
         String token = generateConfirmationToken();
         String confirmationLink = generateConfirmationLink(savedUser.getId(), token);
-        RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+        RoleEntity userRole = roleRepository.findByName("ROLE_ADMIN");
         if (userRole == null) {
-            throw new RuntimeException("Le rôle 'ROLE_USER' n'a pas été trouvé.");
+            throw new RuntimeException("Role introuvable");
         }
-
-        UserRoleEntity userRoleEntity = new UserRoleEntity();
-        userRoleEntity.setUser(savedUser);
-        userRoleEntity.setRole(userRole);
-        userRoleRepository.save(userRoleEntity);
+        userEntity.getRoles().add(userRole);
 
         userEntity.setConfirmationToken(token);
         userRepository.save(userEntity);

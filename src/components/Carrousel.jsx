@@ -4,14 +4,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BlocLastArticle from "./BlocLastArticle";
 import "../styles/components/Carrousel.css";
+import { get } from "../ApiService/axios"
+import Loading from "./Loading";
 
 const CarrouselArticles = () => {
-  const [videoGames, setVideoGames] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchVideoGames() {
     try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/articles");
-      const data = await response.json();
+      const data = await get('articles');
+      setArticles(data)
 
       // Tri des articles par ordre décroissant de date
       const sortedArticles = data.sort(
@@ -19,9 +22,11 @@ const CarrouselArticles = () => {
       );
       const latestArticles = sortedArticles.slice(0, 10);
 
-      setVideoGames(latestArticles);
+      setArticles(latestArticles);
+      setIsLoading(false)
     } catch (error) {
       console.error("Error fetching video games:", error);
+      setIsLoading(false)
     }
   }
 
@@ -60,16 +65,20 @@ const CarrouselArticles = () => {
 
   return (
     <Slider {...settings}>
-      {videoGames.map((videoGame) => (
-        <BlocLastArticle
-          key={videoGame.id}
-          id={videoGame.id}
-          title={videoGame.title}
-          date={formatDate(videoGame.date)}
-          content={videoGame.resume}
-          image={videoGame.imageUrl}
-        />
-      ))}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        articles.map((videoGame) => (
+          <BlocLastArticle
+            key={videoGame.id}
+            id={videoGame.id}
+            title={videoGame.title}
+            date={formatDate(videoGame.date)}
+            content={videoGame.resume}
+            image={videoGame.imageUrl}
+          />
+        ))
+      )}
     </Slider>
   );
 };

@@ -52,7 +52,7 @@ public class UserService implements com.wipify.test.tools.UserService, UserDetai
         log.info("Adding role {} to user {},", roleName, username);
         UserEntity user = userLoginRepository.findByPseudo(username);
         RoleEntity roleEntity = roleJpaRepository.findByName(roleName);
-        user.getRole().add(roleEntity);
+        user.getRoles().add(roleEntity);
         return user;
     }
 
@@ -82,7 +82,7 @@ public class UserService implements com.wipify.test.tools.UserService, UserDetai
         } else {
             log.debug("User found in the database: {}", username);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            user.getRole().forEach(role -> {
+            user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority(role.getName()));
             });
             return new User(user.getPseudo(), user.getPassword(), authorities);

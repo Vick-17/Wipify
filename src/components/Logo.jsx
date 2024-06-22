@@ -5,7 +5,7 @@ const Logo = () => {
     return (
         <div>
             <NavLink to="/">
-                <h1>GamePulse</h1>
+                <h1>KingdomGame</h1>
             </NavLink>
         </div>
     );

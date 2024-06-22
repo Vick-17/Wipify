@@ -48,7 +48,7 @@ export const FormLogin = () => {
     };
 
     try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/login", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export const FormLogin = () => {
     formData.append("confirmationCode", confirmationCode);
 
     try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/user", {
+      const response = await fetch("http://localhost:8000/user", {
         method: "POST",
         body: formData, // Utiliser l'objet FormData comme corps de la requête
       });
@@ -235,18 +235,6 @@ export const FormLogin = () => {
                 className="control"
                 type="email"
                 placeholder="Email"
-              />
-              <div id="spinner" className="spinner"></div>
-            </div>
-            <div className="username">
-              <input
-                value={telephone}
-                onChange={(e) => setNumero(e.target.value)}
-                autoComplete="off"
-                spellCheck="false"
-                className="control"
-                type="text"
-                placeholder="Téléphone"
               />
               <div id="spinner" className="spinner"></div>
             </div>
