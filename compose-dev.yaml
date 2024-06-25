@@ -16,13 +16,13 @@ services:
     image: postgres:13
     container_name: postgres_db_data
     environment:
-      POSTGRES_USER: postgres #username de conexion de la bdd
-      POSTGRES_PASSWORD: iie254007 #password de la bdd
-      POSTGRES_DB: data #nom de la bdd
+      POSTGRES_USER: postgres 
+      POSTGRES_PASSWORD: iie254007 
+      POSTGRES_DB: data 
     volumes:
-      - postgres_db_data:/var/lib/postgresql/data #volume pour sauvegarder les données
+      - postgres_db_data:/var/lib/postgresql/data 
     ports:
-      - 5432:5432 #port, peux être changé si besoin mais uniquement le premier 5432
+      - 5433:5432
     healthcheck:
       test: pg_isready -U postgres
       interval: 10s
