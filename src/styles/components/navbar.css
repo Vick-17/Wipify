@@ -1,4 +1,3 @@
-
 #navbar {
   position: fixed;
   top: 0;
@@ -6,17 +5,22 @@
   width: 100%;
   display: flex;
   z-index: 999;
+  backdrop-filter: blur(10px);
+  /* Ajout du filtre de flou */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  /* Ajout de l'ombre douce */
 }
+
 .navbar {
   flex-wrap: wrap;
   justify-content: space-between;
-  background-color: #1e1e2436;
+  background-color: rgba(30, 30, 36, 0.5);
+  /* Utilisation d'une couleur avec transparence */
   padding: 2%;
-  backdrop-filter: blur(5px);
   align-items: center;
 }
 
-.navbar > ul {
+.navbar>ul {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -51,7 +55,8 @@
   color: white;
   text-decoration: none;
 }
-.logout-login{
+
+.logout-login {
   margin: 10px;
   color: white;
   font-family: Inter, sans-serif;
@@ -62,7 +67,7 @@
   transition: 0.3s ease-in-out;
 }
 
-.logout-login:hover{
+.logout-login:hover {
   background-color: #e13c33a2;
 }
 

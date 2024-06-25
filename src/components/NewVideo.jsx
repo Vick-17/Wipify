@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import YouTube from "react-youtube";
 import "../styles/components/NewVideo.css";
+import { get } from "../ApiService/axios"
 
 const NewVideo = () => {
   const [videoUrls, setVideoUrl] = useState([]);
@@ -24,10 +25,8 @@ const NewVideo = () => {
   useEffect(() => {
     async function fetchVideoUrl() {
       try {
-        const response = await fetch(
-          "https://apispringboot-production.up.railway.app/youtubeVideo"
-        );
-        const data = await response.json();
+        const response = await get("youtubeVideo")
+        const data = await response;
   
         // Tri des articles par ordre décroissant de date
         const sortedArticle = data.sort(

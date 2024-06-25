@@ -1,23 +1,38 @@
 package com.wipify.test.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
-
 @Entity
-@Table(name="youtube_video")
+@Table(name = "youtube_video")
 public class YoutubeVideo {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int id;
-private String url;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-private String name;
+    private String url;
+    private String name;
+    private Date date;
 
-private Date date;
-
+    // Constructeur par défaut
     public YoutubeVideo() {
+    }
+
+    // Getters et setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -34,21 +49,5 @@ private Date date;
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

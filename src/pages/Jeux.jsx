@@ -4,14 +4,15 @@ import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import Article from "../components/Articles";
 import Loading from "../components/Loading";
+import { get } from "../ApiService/axios";
 
 const Jeux = () => {
   const [videoGames, setVideoGames] = useState([]);
 
   async function fetchVideoGames() {
     try {
-      const response = await fetch("https://apispringboot-production.up.railway.app/articles");
-      const data = await response.json();
+      const response = await get("articles");
+      const data = await response;
 
       //Tri des aticles par ordre décroissant de date
       const sortedArticle = data.sort(

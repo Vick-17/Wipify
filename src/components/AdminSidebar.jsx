@@ -5,7 +5,7 @@ import'../styles/components/AdminSadebar.css'
 const AdminSidebar = () => {
   return (
     <div className="Admin-sidebar">
-        <h5>GamePulse Administration</h5>
+        <h5>KingdomGame Administration</h5>
       <nav className="sidebar-nav">
         <ul>
           <li>

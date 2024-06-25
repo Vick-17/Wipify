@@ -58,23 +58,17 @@ const NavBar = () => {
             <li className="nav-list">News</li>
           </NavLink>
           <NavLink
-            to="/test"
-            className={(nav) => (nav.isActive ? "nav-active" : "")}
-          >
-            <li className="nav-list">Test</li>
-          </NavLink>
-          <NavLink
             to="/video"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Video</li>
           </NavLink>
-          <NavLink
+         {/*} <NavLink
             to="/streaming"
             className={(nav) => (nav.isActive ? "nav-active" : "")}
           >
             <li className="nav-list">Streaming</li>
-          </NavLink>
+          </NavLink>*/}
           {roles.length > 0 && roles[0] === "ROLE_ADMIN" && (
             <>
               <NavLink

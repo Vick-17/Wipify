@@ -2,13 +2,47 @@ import React, { useEffect, useState, useRef } from "react";
 import jwtDecode from "jwt-decode";
 import { NavLink } from "react-router-dom";
 import "../styles/components/Dashbord.css";
+import { get, post, del } from "../ApiService/axios";
 
 const Dashboard = () => {
   const [roles, setRoles] = useState([]);
   const token = useRef("");
-  const url = useRef("");
   const [videoGames, setVideoGames] = useState([]);
-  const [videoName, setVideoName] = useState([]);
+  const [videoYt, setVideoYt] = useState([]);
+  const [videoData, setVideoData] = useState({
+    name: "",
+    url: ""
+  });
+
+  const handleAddUrl = async (e) => {
+    e.preventDefault();
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token.current}`,
+    };
+
+    try {
+      const response = await post('youtubevideo', videoData, headers);
+      console.log('Réponse de l\'API: ', response);
+      fetchVideoUrl(); // Refresh video list after adding new video
+    } catch (error) {
+      console.error('Erreur lors de l\'appel POST à l\'API:', error.message);
+    }
+
+    setVideoData({
+      name: "",
+      url: ""
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setVideoData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   useEffect(() => {
     token.current = localStorage.getItem("userToken");
@@ -22,12 +56,9 @@ const Dashboard = () => {
 
   async function fetchVideoGames() {
     try {
-      const response = await fetch(
-        "https://apispringboot-production.up.railway.app/articles"
-      );
-      const data = await response.json();
+      const response = await get("articles");
+      const data = await response;
 
-      // Tri des articles par ordre décroissant de date
       const sortedArticles = data.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
@@ -38,20 +69,18 @@ const Dashboard = () => {
       console.error("Error fetching video games:", error);
     }
   }
+
   async function fetchVideoUrl() {
     try {
-      const response = await fetch(
-        "https://apispringboot-production.up.railway.app/youtubeVideo"
-      );
-      const data = await response.json();
+      const response = await get("youtubeVideo");
+      const data = await response;
 
-      // Tri des articles par ordre décroissant de date
       const sortedVideo = data.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
       const latestVideo = sortedVideo.slice(0, 10);
 
-      setVideoName(latestVideo[0]);
+      setVideoYt(latestVideo);
     } catch (error) {
       console.error("Error fetching video games:", error);
     }
@@ -61,29 +90,22 @@ const Dashboard = () => {
     let newDate = new Date(stringDate);
     return newDate.toLocaleDateString("fr");
   }
+
   const handleDelete = async (id) => {
     try {
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.current}`,
       };
-      const response = await fetch(
-        `https://apispringboot-production.up.railway.app/articles/${id}`,
-        {
-          headers: headers,
-          method: "DELETE",
-        }
-      );
+      const response = await del(`articles/${id}`, headers);
 
-      if (response.ok && roles[0] === "ROLE_ADMIN") {
-        console.log("Article supprimé avec succès !");
-        // Mettez à jour la liste des articles après la suppression
-        fetchVideoGames();
+      if (response.status === 204) {
+        console.log("Vidéo supprimée avec succès !");
+        fetchVideoGames(); // Rafraîchir la liste des vidéos
+      } else if (response.status === 404) {
+        console.error("Vidéo non trouvée. ID:", id);
       } else {
-        console.error(
-          "Erreur lors de la suppression de l'article :",
-          response.statusText
-        );
+        console.error("Erreur lors de la suppression de la vidéo :", response.statusText);
       }
     } catch (error) {
       console.error("Erreur lors de la suppression de l'article :", error);
@@ -91,35 +113,29 @@ const Dashboard = () => {
     }
   };
 
-  const handleAddUrl = async () => {
-    const urlString = url.current.value;
+  const handleDeleteVideo = async (id) => {
     try {
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.current}`,
       };
-      const body = JSON.stringify({
-        name: videoName,
-        url: urlString, // Utilise la date actuelle
-      });
-      const response = await fetch(
-        "https://apispringboot-production.up.railway.app/youtubevideo",
-        {
-          method: "POST",
-          headers: headers,
-          body: body,
-        }
-      );
 
-      if (response.ok && roles[0] === "ROLE_ADMIN") {
-        setVideoName("");
+      const response = await del(`youtubeVideo/${id}`, headers);
+
+      if (response.status === 204) {
+        console.log("Vidéo supprimée avec succès !");
+        fetchVideoUrl(); // Rafraîchir la liste des vidéos
+      } else if (response.status === 404) {
+        console.error("Vidéo non trouvée. ID:", id);
       } else {
-        console.error("Erreur lors de l'ajout de l'URL :", response.statusText);
+        console.error("Erreur lors de la suppression de la vidéo :", response.statusText);
       }
     } catch (error) {
-      console.error("Erreur lors de l'ajout de l'URL :", error);
+      console.error("Erreur lors de la suppression de la vidéo :", error);
+      console.error("Vous ne possédez pas les droits");
     }
   };
+
 
   return (
     <div className="dashboard">
@@ -129,7 +145,6 @@ const Dashboard = () => {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Nom de l'article</th>
                 <th>Date de publication</th>
                 <th>Actions</th>
@@ -138,7 +153,6 @@ const Dashboard = () => {
             <tbody>
               {videoGames.map((article) => (
                 <tr key={article.id}>
-                  <td>{article.id}</td>
                   <td>
                     <NavLink
                       style={{ color: "black" }}
@@ -156,7 +170,7 @@ const Dashboard = () => {
                           width="20px"
                           height="20px"
                           viewBox="0 0 24 24"
-                          stroke-width="2"
+                          strokeWitdth="2"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                           color="#000000"
@@ -164,16 +178,16 @@ const Dashboard = () => {
                           <path
                             d="M4.5 8H15s0 0 0 0 5 0 5 4.706C20 18 15 18 15 18H6.286"
                             stroke="#fff"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWitdth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           ></path>
                           <path
                             d="M7.5 11.5L4 8l3.5-3.5"
                             stroke="#fff"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWitdth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           ></path>
                         </svg>
                       </button>
@@ -186,7 +200,7 @@ const Dashboard = () => {
                       <svg
                         width="20px"
                         height="20px"
-                        stroke-width="1.5"
+                        strokeWitdth="1.5"
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -195,9 +209,9 @@ const Dashboard = () => {
                         <path
                           d="M9.172 14.828L12.001 12m2.828-2.828L12.001 12m0 0L9.172 9.172M12.001 12l2.828 2.828M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
                           stroke="#fff"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWitdth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         ></path>
                       </svg>
                     </button>
@@ -214,12 +228,19 @@ const Dashboard = () => {
       <div className="block block2">
         <h5>Ajouter une video youtube</h5>
         <div className="input-container">
-          <input type="text" placeholder="Entrez une URL" ref={url} />
+          <input
+            type="text"
+            placeholder="Entrez une URL"
+            name="url"
+            value={videoData.url}
+            onChange={handleInputChange}
+          />
           <input
             type="text"
             placeholder="Entrez un nom"
-            value={videoName}
-            onChange={(e) => setVideoName(e.target.value)}
+            name="name"
+            value={videoData.name}
+            onChange={handleInputChange}
           />
           <button onClick={handleAddUrl}>Ajouter</button>
         </div>
@@ -227,18 +248,42 @@ const Dashboard = () => {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nom de l'article</th>
+                <th>Nom de la vidéo</th>
                 <th>Date de publication</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {videoName.map((video) => (
+              {videoYt.map((video) => (
                 <tr key={video.id}>
-                  <td>{video.id}</td>
                   <td>{video.name}</td>
                   <td>{formatDate(video.date)}</td>
+                  <td>                    
+                    <button
+                    className="delete-btn"
+                      onClick={() => handleDeleteVideo(video.id)}
+                  >
+                    <span className="btn-content">Supprimer</span>
+                    <svg
+                      width="20px"
+                      height="20px"
+                      strokeWitdth="1.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      color="#fff"
+                    >
+                      <path
+                        d="M9.172 14.828L12.001 12m2.828-2.828L12.001 12m0 0L9.172 9.172M12.001 12l2.828 2.828M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                        stroke="#fff"
+                        strokeWitdth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></path>
+                    </svg>
+                  </button></td>
                 </tr>
+
               ))}
             </tbody>
           </table>

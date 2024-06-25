@@ -4,6 +4,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import "../styles/components/FormulaireArticle.css";
 import { useParams, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { put, post, get } from "../ApiService/axios"
 
 const FormulaireArticle = () => {
   const editorRef = useRef(null);
@@ -31,7 +32,6 @@ const FormulaireArticle = () => {
     if (token.current !== null) {
       const decodedToken = jwtDecode(token.current);
       setRoles(decodedToken.roles);
-      console.log(decodedToken);
     }
   }, []);
 
@@ -41,6 +41,7 @@ const FormulaireArticle = () => {
     setResume(value);
     setWordCount(value.trim().length);
   };
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token.current}`,
@@ -57,28 +58,18 @@ const FormulaireArticle = () => {
     };
 
     try {
-      const response = await fetch(
-        `https://apispringboot-production.up.railway.app/articles/${id}`,
-        {
-          method: "PUT",
-          headers: headers,
-          body: JSON.stringify(formData),
-        }
-      );
-
+      const response = await put(`articles/${id}`, formData, headers);
       if (response.ok && roles.includes("ROLE_ADMIN")) {
         console.log("Données mises à jour avec succès !");
         navigate(`/Jeux/${id}`);
       } else {
-        console.error(
-          "Erreur lors de la mise à jour des données :",
-          response.statusText
-        );
+        console.error("Erreur lors de la mise à jour des données :", response.statusText);
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour des données :", error);
     }
   };
+
 
 
   // Fonction pour gérer la soumission du formulaire.
@@ -92,44 +83,36 @@ const FormulaireArticle = () => {
       imageUrl: imageUrl,
     };
 
-    // Envoi des données du formulaire à l'API.
     try {
-      const response = await fetch(
-        "https://apispringboot-production.up.railway.app/articles",
-        {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await post("articles", formData, headers);
 
-      if (response.ok && roles[0] === "ROLE_ADMIN") {
+      if (response) {
         console.log("Données envoyées avec succès !");
-        // Réinitialisation des champs du formulaire après soumission réussie.
+        const newArticleId = response.id;
+
         setTitre("");
         setResume("");
         setImageUrl("");
         setWordCount(0);
+
+        navigate(`/Jeux/${newArticleId}`);
       } else {
-        console.error(
-          "Erreur lors de l'envoi des données :",
-          response.statusText
-        );
+        console.error("Erreur lors de l'envoi des données :", response.statusText);
       }
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données :", error);
+      console.error("Erreur lors de l'envoi des données :", error.message);
     }
   };
+
+
 
   useEffect(() => {
     if (id !== undefined) {
       setIsEditMode(true);
       const fetchArticle = async () => {
         try {
-          const responce = await fetch(
-            `https://apispringboot-production.up.railway.app/articles/${id}`
-          );
-          const data = await responce.json();
+          const response = await get(`articles/${id}`)
+          const data = await response;
 
           setArticle(data);
           setTitre(data.title);

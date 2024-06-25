@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/page/PageArticle.css";
 import jwt_decode from "jwt-decode";
+import {get} from "../ApiService/axios";
 
 const Article = () => {
   const [article, setArticle] = useState(null);
@@ -14,8 +15,8 @@ const Article = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-          const response = await fetch(`https://apispringboot-production.up.railway.app/articles/${id}`);
-          const data = await response.json();
+        const response = await get(`articles/${id}`);
+          const data = await response;
           setArticle(data);
       } catch (error) {
         console.error("Error fetching article:", error);
