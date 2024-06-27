@@ -27,6 +27,12 @@ services:
     build:
       context: .
       dockerfile: DockerfileBack
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/KingdomGame
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Iie254007.
+    depends_on:
+      - postgres
 
   frontend:
     build:
