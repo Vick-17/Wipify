@@ -89,7 +89,7 @@ export const FormLogin = () => {
     formData.append("confirmationCode", confirmationCode);
 
     try {
-      const response = await fetch("https://jeuxvideosnews.com/user", {
+      const response = await fetch("https://jeuxvideosnews.com/api/user", {
         method: "POST",
         body: formData, // Utiliser l'objet FormData comme corps de la requête
       });
