@@ -48,7 +48,7 @@ export const FormLogin = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/login", {
+      const response = await fetch("https://jeuxvideosnews.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export const FormLogin = () => {
     formData.append("confirmationCode", confirmationCode);
 
     try {
-      const response = await fetch("http://localhost:8000/user", {
+      const response = await fetch("https://jeuxvideosnews.com/user", {
         method: "POST",
         body: formData, // Utiliser l'objet FormData comme corps de la requête
       });

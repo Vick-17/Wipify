@@ -1,4 +1,5 @@
-const apiUrl = "http://localhost:8000";
+const apiUrl = "https://jeuxvideosnews.com";
+/*const apiUrl = "https://jeuxvideosnews.com";*/
 
 async function get(endpoint) {
     const url = `${apiUrl}/${endpoint}`;
