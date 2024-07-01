@@ -63,53 +63,23 @@ public class UserController {
      * @param response   La réponse HTTP.
      * @return L'utilisateur créé.
      */
-    @PostMapping(value = "/user", consumes = "multipart/form-data")
+    @PostMapping(value = "/user", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin
-    public String createUser(@ModelAttribute("userEntity") UserEntity userEntity, HttpServletResponse response) {
-        MultipartFile imageFile = userEntity.getImageFile();
-        try {
-            if (!imageFile.isEmpty()) {
-                logger.info("Sauvegarde du fichier photo");
-                // Calcul du hash du fichier pour obtenir un nom unique
-                String storageHash = getStorageHash(imageFile).get();
-                Path rootLocation = this.fileStorageService.getRootLocation();
-                // Récupération de l'extension
-                String fileExtension = mimeTypeToExtension(imageFile.getContentType());
-                // Ajout de l'extension au nom du fichier
-                storageHash = storageHash + fileExtension;
-                // Chemin de stockage de la photo
-                Path saveLocation = rootLocation.resolve(storageHash);
-
-                // Suppression du fichier existant si nécessaire
-                Files.deleteIfExists(saveLocation);
-
-                // Tentative de sauvegarde de la photo
-                Files.copy(imageFile.getInputStream(), saveLocation);
-
-                // Ajout du chemin de la photo à l'objet UserEntity
-                userEntity.setImageName(storageHash);
-            }
-        } catch (IOException e) {
-            logger.error("Erreur lors de la sauvegarde de la photo : " + e.getMessage());
-            // Gestion de l'erreur si la sauvegarde de la photo échoue
+    public UserEntity createUser(@RequestBody UserEntity users) {
+        UserEntity existingUser = userRepository.findByEmail(users.getEmail());
+        if (existingUser != null) {
+            throw new RuntimeException("L'adresse e-mail est déjà utilisée.");
         }
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String passwordEncode = bCryptPasswordEncoder.encode(userEntity.getPassword());
-        userEntity.setPassword(passwordEncode);
-        UserEntity savedUser = userRepository.save(userEntity);
-        String token = generateConfirmationToken();
-        String confirmationLink = generateConfirmationLink(savedUser.getId(), token);
+        String passwordEncode = bCryptPasswordEncoder.encode(users.getPassword());
+        users.setPassword(passwordEncode);
         RoleEntity userRole = roleRepository.findByName("ROLE_ADMIN");
         if (userRole == null) {
             throw new RuntimeException("Role introuvable");
         }
-        userEntity.getRoles().add(userRole);
-
-        userEntity.setConfirmationToken(token);
-        userRepository.save(userEntity);
-
-        return confirmationLink;
+        users.getRoles().add(userRole);
+        return userRepository.save(users);
     }
 
     /**
