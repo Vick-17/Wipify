@@ -1,4 +1,4 @@
-const apiUrl = "https://jeuxvideosnews.com";
+const apiUrl = "https://jeuxvideosnews.com/api";
 /*const apiUrl = "https://jeuxvideosnews.com";*/
 
 async function get(endpoint) {

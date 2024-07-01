@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api")
 public class ArticleController {
     @Autowired
     private VideoGameRepository videoGameRepository;

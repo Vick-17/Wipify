@@ -13,6 +13,7 @@ import java.util.Optional;
 
 
 @RestController
+@RequestMapping("/api")
 public class YoutubeVideoController {
     @Autowired
     private YoutubeVideoRepository youtubeVideoRepository;

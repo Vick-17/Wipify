@@ -33,6 +33,7 @@ import java.util.UUID;
  * Contrôleur pour les opérations liées aux utilisateurs.
  */
 @RestController
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
