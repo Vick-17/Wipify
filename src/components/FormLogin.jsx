@@ -15,30 +15,9 @@ export const FormLogin = () => {
   const [error, setError] = useState("");
   const [confirmationCode] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [formData, setFormData] = useState([]);
 
-  const sendEmail = (formData) => {
-    const serviceId = "service_o8p8oku";
-    const templateId = "template_hr9q6ek";
-    const userId = "c6rkYaZsGbNS0Yd6Z";
 
-    const templateParams = {
-      to_name: formData.nom,
-      from_name: "Wipify",
-      confirmationCode: formData.confirmationCode,
-    };
-
-    emailjs
-      .send(serviceId, templateId, templateParams, userId)
-      .then((response) => {
-        console.log(response.status, response.text);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-  };
-
-  // Labels de force du mot de passe
-  const strengthLabels = ["faible", "moyenne", "forte"];
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -74,30 +53,14 @@ export const FormLogin = () => {
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
-
-    const formDataPhotoPath = e.target.elements.imageFile.files[0]; // Récupérer le fichier photo à partir du formulaire
-    const formData = new FormData();
-    formData.append('imageFile', formDataPhotoPath); // Ajouter la photo à l'objet FormData
-
-    // Ajouter les autres champs du formulaire à l'objet FormData
-    formData.append("nom", nom);
-    formData.append("prenom", prenom);
-    formData.append("pseudo", pseudo);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("telephone", telephone);
-    formData.append("confirmationCode", confirmationCode);
-
     try {
       const response = await fetch("https://jeuxvideosnews.com/api/user", {
         method: "POST",
-        body: formData, // Utiliser l'objet FormData comme corps de la requête
+        body: formData,
       });
 
       if (response.ok) {
-        const responceText = await response.text();
-        formData.set("confirmationCode", responceText);
-        sendEmail(formData);
+        window.location.href("/")
       } else {
         const errorMessage = await response.text();
         setError(errorMessage);
@@ -107,34 +70,6 @@ export const FormLogin = () => {
     }
   };
 
-  // Calcul de la force du mot de passe
-  const getStrength = (password) => {
-    let strengthIndic = -1,
-      upper = false,
-      lower = false,
-      numbers = false;
-
-    for (let i = 0; i < password.length; i++) {
-      const char = password.charCodeAt(i);
-      if (!upper && char >= 65 && char <= 90) {
-        upper = true;
-        strengthIndic++;
-      }
-      if (!numbers && char >= 48 && char <= 57) {
-        numbers = true;
-        strengthIndic++;
-      }
-      if (!lower && char >= 97 && char <= 122) {
-        lower = true;
-        strengthIndic++;
-      }
-    }
-    setStrength(strengthLabels[strengthIndic]);
-  };
-
-  // Gestion du changement de valeur des champs de mot de passe
-  const handleChange = (event) => getStrength(event.target.value);
-
   // État du formulaire de connexion/inscription
   const [showLogin, setShowLogin] = useState(true);
 
@@ -143,12 +78,20 @@ export const FormLogin = () => {
     setShowLogin(!showLogin);
   };
 
+  const handleChangeValue = (e) => {
+    if (e.target.name === 'image') {
+      setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
   return (
     <>
       {showLogin ? (
         <div className="login-card">
           <h2>Connexion</h2>
-          {error && <p style={{color: 'red'}} >Erreur de connexion</p>}
+          {error && <p style={{ color: 'red' }} >Erreur de connexion</p>}
           <form className="login-form" onSubmit={handleLoginSubmit}>
             <div className="username">
               <input
@@ -184,16 +127,16 @@ export const FormLogin = () => {
         <div className="login-card">
           <h2>Inscription</h2>
           <form className="login-form" onSubmit={handleSignupSubmit}>
-            <input
+            {/* <input
               type="file"
               name="imageFile"
               accept="image/*"
               onChange={(e) => setSelectedPhoto(e.target.files[0])}
-            />
+            /> */}
             <div className="name">
               <input
-                value={nom}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.nom}
+                onChange={handleChangeValue}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -204,8 +147,8 @@ export const FormLogin = () => {
             </div>
             <div className="lastName">
               <input
-                value={prenom}
-                onChange={(e) => setLastName(e.target.value)}
+                value={formData.prenom}
+                onChange={handleChangeValue}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -216,8 +159,8 @@ export const FormLogin = () => {
             </div>
             <div className="pseudo">
               <input
-                value={pseudo}
-                onChange={(e) => setPseudo(e.target.value)}
+                value={formData.pseudo}
+                onChange={handleChangeValue}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -228,8 +171,8 @@ export const FormLogin = () => {
             </div>
             <div className="username">
               <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChangeValue}
                 autoComplete="off"
                 spellCheck="false"
                 className="control"
@@ -239,23 +182,14 @@ export const FormLogin = () => {
               <div id="spinner" className="spinner"></div>
             </div>
             <input
-              value={password}
+              value={formData.password}
+              onChange={handleChangeValue}
               name="password"
               spellCheck="false"
               className="control"
               type="password"
               placeholder="Password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-                handleChange(e);
-              }}
             />
-            <div className={`bars ${strength}`}>
-              <div></div>
-            </div>
-            <div className="strength">
-              {strength && <>{strength} password</>}
-            </div>
             <button className="control" type="submit">
               M'INSCRIRE
             </button>
