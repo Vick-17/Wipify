@@ -56,6 +56,9 @@ export const FormLogin = () => {
     try {
       const response = await fetch("https://jeuxvideosnews.com/api/user", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: formData,
       });
 
