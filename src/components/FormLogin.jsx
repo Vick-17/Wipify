@@ -15,7 +15,7 @@ export const FormLogin = () => {
   const [error, setError] = useState("");
   const [confirmationCode] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [formData, setFormData] = useState([]);
+  const [formData, setFormData] = useState({});
 
 
 
@@ -59,7 +59,7 @@ export const FormLogin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -73,6 +73,7 @@ export const FormLogin = () => {
     }
   };
 
+
   // État du formulaire de connexion/inscription
   const [showLogin, setShowLogin] = useState(true);
 
@@ -82,12 +83,14 @@ export const FormLogin = () => {
   };
 
   const handleChangeValue = (e) => {
-    if (e.target.name === 'image') {
-      setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+    const { name, value, files } = e.target;
+    if (name === 'image') {
+      setFormData({ ...formData, [name]: files[0] });
     } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setFormData({ ...formData, [name]: value });
     }
   };
+
 
   return (
     <>
@@ -129,77 +132,75 @@ export const FormLogin = () => {
         // sinon, affiche la vue d'inscription
         <div className="login-card">
           <h2>Inscription</h2>
-          <form className="login-form" onSubmit={handleSignupSubmit}>
-            {/* <input
-              type="file"
-              name="imageFile"
-              accept="image/*"
-              onChange={(e) => setSelectedPhoto(e.target.files[0])}
-            /> */}
-            <div className="name">
+            <form className="login-form" onSubmit={handleSignupSubmit}>
+              <div className="name">
+                <input
+                  name="nom" // Ajouter l'attribut name
+                  value={formData.nom || ""} // Utiliser formData.nom
+                  onChange={handleChangeValue}
+                  autoComplete="off"
+                  spellCheck="false"
+                  className="control"
+                  type="text"
+                  placeholder="Nom"
+                />
+                <div id="spinner" className="spinner"></div>
+              </div>
+              <div className="lastName">
+                <input
+                  name="prenom" // Ajouter l'attribut name
+                  value={formData.prenom || ""} // Utiliser formData.prenom
+                  onChange={handleChangeValue}
+                  autoComplete="off"
+                  spellCheck="false"
+                  className="control"
+                  type="text"
+                  placeholder="Prenom"
+                />
+                <div id="spinner" className="spinner"></div>
+              </div>
+              <div className="pseudo">
+                <input
+                  name="pseudo" // Ajouter l'attribut name
+                  value={formData.pseudo || ""} // Utiliser formData.pseudo
+                  onChange={handleChangeValue}
+                  autoComplete="off"
+                  spellCheck="false"
+                  className="control"
+                  type="text"
+                  placeholder="Pseudo"
+                />
+                <div id="spinner" className="spinner"></div>
+              </div>
+              <div className="username">
+                <input
+                  name="email" // Ajouter l'attribut name
+                  value={formData.email || ""} // Utiliser formData.email
+                  onChange={handleChangeValue}
+                  autoComplete="off"
+                  spellCheck="false"
+                  className="control"
+                  type="email"
+                  placeholder="Email"
+                />
+                <div id="spinner" className="spinner"></div>
+              </div>
               <input
-                value={formData.nom}
+                name="password" // Ajouter l'attribut name
+                value={formData.password || ""} // Utiliser formData.password
                 onChange={handleChangeValue}
-                autoComplete="off"
                 spellCheck="false"
                 className="control"
-                type="text"
-                placeholder="Nom"
+                type="password"
+                placeholder="Password"
               />
-              <div id="spinner" className="spinner"></div>
-            </div>
-            <div className="lastName">
-              <input
-                value={formData.prenom}
-                onChange={handleChangeValue}
-                autoComplete="off"
-                spellCheck="false"
-                className="control"
-                type="text"
-                placeholder="Prenom"
-              />
-              <div id="spinner" className="spinner"></div>
-            </div>
-            <div className="pseudo">
-              <input
-                value={formData.pseudo}
-                onChange={handleChangeValue}
-                autoComplete="off"
-                spellCheck="false"
-                className="control"
-                type="text"
-                placeholder="pseudo"
-              />
-              <div id="spinner" className="spinner"></div>
-            </div>
-            <div className="username">
-              <input
-                value={formData.email}
-                onChange={handleChangeValue}
-                autoComplete="off"
-                spellCheck="false"
-                className="control"
-                type="email"
-                placeholder="Email"
-              />
-              <div id="spinner" className="spinner"></div>
-            </div>
-            <input
-              value={formData.password}
-              onChange={handleChangeValue}
-              name="password"
-              spellCheck="false"
-              className="control"
-              type="password"
-              placeholder="Password"
-            />
-            <button className="control" type="submit">
-              M'INSCRIRE
-            </button>
-            <button className="goToLogSign" onClick={toggleFormHide}>
-              Basculer vers la connexion
-            </button>
-          </form>
+              <button className="control" type="submit">
+                M'INSCRIRE
+              </button>
+              <button className="goToLogSign" onClick={toggleFormHide}>
+                Basculer vers la connexion
+              </button>
+            </form>
         </div>
       )}
     </>
